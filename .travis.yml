@@ -1,35 +1,29 @@
 language: go
-
 services:
 - docker
-
 go:
 - 1.7
-
 env:
   global:
   - CGO_ENABLED=0
   - GOOS=linux
   - GOARCH=amd64
-
+  - secure: 8T9TppQFvXRkRo4Q/6/7CYwYSPZZ6zRfCJZxjVfNH3uUPQKBqf6XT3CzMaP9w2hXVH+4eW2slBjgyDPk/VttIlRxh4wIdKaRvlHK65hJ2XECAQs+HaHtEhfa/z4HPzqnqVP3z5uFVWfETsdEP38U4p7IZDUNezIrIDwg1QsYvlU0kReT2edL1rA27X5mA6EqYETzlIFhYF9YYhC8pTzVSuRP86K+yAvmZw876iFSHciJDrRZD7jyYxGMLl6QQPEa3dbabZ5gv+hXX6YLTx3/UJ9WkQd2IsunJIl3HFIldco3Z2kKrEQhELOPJPLr02K6niTpM0DIjkzf3P9IT/IJ1iNMpkin7yK3dkmhVcfp1laAb4vuNmWFX5lwxzrrFkMGDrUA3bq8ie7aHRa/rNDJZC3cbmjzhKgzyrcIRdleK56dZO758A5sqINdP07y5/I+9aLeebnTlayNGA//wUBYcREcLyb1yj35sSneVSzA/nqQJVjKESOxoDZumxGV70yVQu3Nz1gUgJNc4Bw5FZN9fO6d9sW6b7Hn/IOcj5sk9HvQZnxWVEXAF/nZ1TGwtB33AwKpu6fYiN8aUApq4S7SSAfZA1qmBw9DRyqGnTyzCp0em/FN1th93PBSTAiiK2zudSBbFjdQAYgqEvI6QVlup3+52B2g9Kkc8BUrHFNNx6o=
+  - secure: 9WZ8wZsXJ24BnEhbtBZ1boT4aL4Tg8Co0AK1TpKCiJS7aBM3H+edVU6rN5SgiQp6RpTYvYOScUzpWM8g7lcY03IMvIGFI58XQR/UnTDk4N5u949kO5Kgfz9UOpiwv2D0LkiA9FjTxBqGygw0GvoszG1n3oWxCoyI9oKx5nOwOyvPkTXP8hfz9yTV53i3s5aSNjXJgEOGawr6WvApxsApBKrF4vkPRVtu4jZ/lKfbXYdN4Bpm8oQRq6B5MXmsD1RNBkK80DReliOsvpPXsfiIFOcOh5t/OWjzqsKeY2VTM/fodYe2ptOTwfylLZq+aCEp9FaHNyX79Z4P+BA9vHnxcpUBb0EeOomGahmTqlurcc/OOXmEHJhxMet/4JjaJy0VCNfLTi2tePXYCe/asYey9q59J8j2qPpDg4MKWzFDjcVlGnMtA2tvCEezL0/TipNmt4d0XKKVH6ZDaxJCsCzGU3Iub6SWVV4szsSQRnLWZDRVllK120xl/A13PmLJ0+gSEmivInb+cdx+MI+tc310JPXK+DpP9cFCIIXZ1qEOb5V0/tWyfftX9/7zgn57MvJxf0I8/HWHdtLaW4ogPa/txAStIY5gVB+L8FiaJ4oS8x5BbSi9RBOso7NrB6m2W/vlbTugcqJV53WOlbBfVqT6t9nFS4Ir6n0Am6m0atVFq00=
+  - secure: 3kHhqoAh1yAri740GrrmplmjmqtaoQYEpVgUk7bSe+sMgID6jg0lR+8NkryPRk0x4EUSgI9uAqo2kqRyf0iLuFtfoMgcHKQTc5/JW9XxiDyjz42sGzmCW0WFYFHnfpy85Lu1nZPm68gihH8h2ok0eAYY3/dyd5UUQPkXWf2XWBJ54ptMJzyXZiaPv0sCVdaMJfkZKATBrBt4JE+WhEOomSGE06JDQL6lJGYod2ZzLnZ0ccEz/TJ8NjL+m4i2mz68rxdHoglNoa7lm9MP9zoswNBwdekD3LQHHpsT+cTRE6/cpualoAe8D3wyQCGZVwQpubPRvrlN8nN2X2472t217y7Dz56nIzztdPqte8jU4GGIjYsAqoS5oV21cLWm/Mskp+uWnww6mAs3whD2IQrWVrE8cmQOjmQZHb1wPt9Asg1CVCdBVxfMOwJL7ng89rxgX9xGGaN00vGjcdrVmw6wxVc1T6aYcie7RK7WJc56rJDgXjA+H5Y69M8Veb+mBcwT36mOndZRtLbIACg6aS54eiuFzyW5V+0OjguOMgfkYYOPXcMk1lCEI7b+Im5zQTEpGFCrDU4kZuKhHKy0FXSXHhcbNxtXw9Jyon4UfJt5Cp05PR+qM/tFDjhERX1Z1LYkn7GW6+WgvrTWU6VehXMr/UVTjZ4rZ2qWu5QP2z0I4zY=
 branches:
   only:
   - master
-  - /^\d+\.\d+\.\d+/
-
+  - "/^\\d+\\.\\d+\\.\\d+/"
 script:
 - go vet
 - go test github.com/nytimes/drone-gdm/plugin
-- go build -ldflags "-s -w -X main.lbl=$TRAVIS_BRANCH -X main.build=$TRAVIS_BUILD_NUMBER -X main.rev=$TRAVIS_COMMIT" -a -tags netgo
-
+- go build -ldflags "-s -w -X main.lbl=$TRAVIS_BRANCH -X main.build=$TRAVIS_BUILD_NUMBER
+  -X main.rev=$TRAVIS_COMMIT" -a -tags netgo
 after_success:
-- if [ "$TRAVIS_BRANCH" == "master" -a "$TRAVIS_PULL_REQUEST" == "false" ]; then
-    docker build -t "nytimes/drone-gdm:latest" . ;
-    docker login -e="$DOCKER_EMAIL" -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD" ;
-    docker push "nytimes/drone-gdm:latest";
-  fi
-- if [ "x$TRAVIS_TAG" != "x" -a "$TRAVIS_PULL_REQUEST" == "false" ]; then
-    docker build -t "nytimes/drone-gdm:$TRAVIS_TAG" . ;
-    docker login -e="$DOCKER_EMAIL" -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD" ;
-    docker push "nytimes/drone-gdm:$TRAVIS_TAG";
-  fi
+- if [ "$TRAVIS_BRANCH" == "master" -a "$TRAVIS_PULL_REQUEST" == "false" ]; then docker
+  build -t "nytimes/drone-gdm:latest" . ; docker login -e="$DOCKER_EMAIL" -u="$DOCKER_USERNAME"
+  -p="$DOCKER_PASSWORD" ; docker push "nytimes/drone-gdm:latest"; fi
+- if [ "x$TRAVIS_TAG" != "x" -a "$TRAVIS_PULL_REQUEST" == "false" ]; then docker build
+  -t "nytimes/drone-gdm:$TRAVIS_TAG" . ; docker login -e="$DOCKER_EMAIL" -u="$DOCKER_USERNAME"
+  -p="$DOCKER_PASSWORD" ; docker push "nytimes/drone-gdm:$TRAVIS_TAG"; fi
