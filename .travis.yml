@@ -20,9 +20,13 @@ script:
 - go build -ldflags "-s -w -X main.lbl=$TRAVIS_BRANCH -X main.build=$TRAVIS_BUILD_NUMBER
   -X main.rev=$TRAVIS_COMMIT" -a -tags netgo
 after_success:
-- if [ "$TRAVIS_BRANCH" == "master" -a "$TRAVIS_PULL_REQUEST" == "false" ]; then docker
-  build -t "nytimes/drone-gdm:latest" . ; docker login -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD"
-  ; docker push "nytimes/drone-gdm:latest"; fi
-- if [ "x$TRAVIS_TAG" != "x" -a "$TRAVIS_PULL_REQUEST" == "false" ]; then docker build
-  -t "nytimes/drone-gdm:$TRAVIS_TAG" . ; docker login -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD"
-  ; docker push "nytimes/drone-gdm:$TRAVIS_TAG"; fi
+- if [ "$TRAVIS_BRANCH" == "master" -a "$TRAVIS_PULL_REQUEST" == "false" ]; then
+    docker build -t "nytimes/drone-gdm:latest" . ;
+    docker login -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD" ;
+    docker push "nytimes/drone-gdm:latest";
+  fi
+- if [ -n "x$TRAVIS_TAG" ] && [ "$TRAVIS_PULL_REQUEST" == "false" ]; then
+    docker build -t "nytimes/drone-gdm:$TRAVIS_TAG" . ;
+    docker login -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD" ;
+    docker push "nytimes/drone-gdm:$TRAVIS_TAG";
+  fi
