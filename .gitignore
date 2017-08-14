@@ -1,0 +1,4 @@
+/.drone.sec.yml
+/drone-gdm
+/bin/test-*.sh
+

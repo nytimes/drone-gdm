@@ -1,0 +1,10 @@
+package: github.com/andrew-canaday/glide
+homepage: https://andrew-canaday.github.io/glide
+license: Apache 2.0
+owners:
+- name: Andrew Canaday
+  email: andrew.canaday@nytimes.com
+  homepage: https://github.com/andrew-canaday/
+testImport:
+- package: github.com/stretchr/testify/assert
+

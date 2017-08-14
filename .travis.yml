@@ -1,0 +1,35 @@
+language: go
+
+services:
+- docker
+
+go:
+- 1.7
+
+env:
+  global:
+  - CGO_ENABLED=0
+  - GOOS=linux
+  - GOARCH=amd64
+
+branches:
+  only:
+  - master
+  - /^\d+\.\d+\.\d+/
+
+script:
+- go vet
+- go test github.com/nytimes/drone-gdm/plugin
+- go build -ldflags "-s -w -X main.lbl=$TRAVIS_BRANCH -X main.build=$TRAVIS_BUILD_NUMBER -X main.rev=$TRAVIS_COMMIT" -a -tags netgo
+
+after_success:
+- if [ "$TRAVIS_BRANCH" == "master" -a "$TRAVIS_PULL_REQUEST" == "false" ]; then
+    docker build -t "nytimes/drone-gdm:latest" . ;
+    docker login -e="$DOCKER_EMAIL" -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD" ;
+    docker push "nytimes/drone-gdm:latest";
+  fi
+- if [ "x$TRAVIS_TAG" != "x" -a "$TRAVIS_PULL_REQUEST" == "false" ]; then
+    docker build -t "nytimes/drone-gdm:$TRAVIS_TAG" . ;
+    docker login -e="$DOCKER_EMAIL" -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD" ;
+    docker push "nytimes/drone-gdm:$TRAVIS_TAG";
+  fi
