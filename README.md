@@ -17,14 +17,15 @@ Documentation follows for the handful of parameters which are particular to `dro
 
 #### State and Action
 The `state` can be one of `absent`, `present`, or `latest`.
-Plugin "state" | Object Exists? | Action
--------------- | -------------- | -----------
-present        | no             | `create`
-present        | yes            | _no action_
-latest         | no             | `create`
-latest         | yes            | `update`
-absent         | no             | _no action_
-absent         | yes            | `delete`
+
+| Plugin "state" | Object Exists? | Action      |
+| -------------- | -------------- | ----------- |
+| present        | no             | `create`    |
+| present        | yes            | _no action_ |
+| latest         | no             | `create`    |
+| latest         | yes            | `update`    |
+| absent         | no             | _no action_ |
+| absent         | yes            | `delete`    |
 
 The specific `action` selected by drone-gdm can be provided to your template
 as a property, by specifying `passAction: true`. This will invoke your
