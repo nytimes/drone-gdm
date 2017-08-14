@@ -25,7 +25,7 @@ after_success:
     docker login -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD" ;
     docker push "nytimes/drone-gdm:latest";
   fi
-- if [ -n "x$TRAVIS_TAG" ] && [ "$TRAVIS_PULL_REQUEST" == "false" ]; then
+- if [ -n "$TRAVIS_TAG" ] && [ "$TRAVIS_PULL_REQUEST" == "false" ]; then
     docker build -t "nytimes/drone-gdm:$TRAVIS_TAG" . ;
     docker login -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD" ;
     docker push "nytimes/drone-gdm:$TRAVIS_TAG";
