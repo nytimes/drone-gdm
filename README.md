@@ -74,3 +74,7 @@ deploy:
       passAction: false
 
 ```
+
+### Resources
+ - [drone-gdm on Travis-CI](https://travis-ci.org/NYTimes/drone-gdm)
+ - [drone-gdm on dockerhub](https://hub.docker.com/r/nytimes/drone-gdm/)
