@@ -8,9 +8,8 @@ env:
   - CGO_ENABLED=0
   - GOOS=linux
   - GOARCH=amd64
-  - secure: wVUxvqGFIbrNKwwAPybnaOFUqqZ/5pikMCK385DMkQ8Iw9o5unEqOUH1sHOXLbzfiB7JjlRO0IYMWinyk7p6avHH4DP4lLQnw9HwIaqxMsmZ+D8s6DthCIvjpLRwcWabU4Nw3yxq871BHd99sF+VsPOFIVYAZJYbYddzosKgoRIVTK6J1Pi0pNdiSyW7dqIGTj/ne5MZsVriNGqV9BPaosjFo7U/d9xoIwuRuqlgMAx7tERvyOO5lBQOKFr4LmDxdWTl/coYWqMSeaFQOPIK7yWmUdmFXkzYzKTu4z5kuqcafD38DkTHR02wCopGe2LUo1/UyEhn0TETWffEYjgmbbijEBsRlea/qOH4Ucc8IfQksZMUBYeQXsFzGjwGOgBIRpGbz3UEGSgnMeo/E9PAbVk2R0LANQWk0PpgJVg8/c0BHKTxnBwrNF5s8K4Unsq3Gg6gfu/XSxfoOUU8f24iKqIIhThboYHu0s8/r/gmMeqDhf4VeYBsi8LpNmCja2gcrPhk7pJ30mpjMjgaMomC4maGnULWqZfSZlj9WPXftKG61cgRljnwSoVWjQPwVsPgsI8+9jwAsHWDjCKlt63RWUubO45Ji8/H2kXpe+wTTYkqp29h0PEMCOTZaJ6P6HrmtWK/S5TIhirIpdktcmqrh2xtfKgDoAU8mMLi9+iUVx4=
-  - secure: FayJhyI6W3RIjeHa27mMCuw4ldAqL6m5eUGTak14DwU5OeECTsVdOWR3zI/tLrZLIB7WvWbPHG77gkbeYKChHCYZ7IbFvjQzDCnOnRu2tcL++Jwhj5bSq0wD9D6U0nEtPQLWVtF9MOGCPtG1hrPrhjLuDXFUXvJD4NhXTfipU/ULcbQ1mh4rLo+eHtcE5M+cZp11pMxReSSsC+cziFJGleP2Ikh8HwdtBHX4fEXYoBHOz4g9/w9kFz7/TJUS+zhGrczMUpMTBj+eMgYc7zY5fEQ+irjzzcttR8ixxLstOrl2ikgikRjMfv7YomXCsrEUipbNzvlCCKlfeBNAi7huZt8z8fvqDjdaK4sHncxSK7v9Vg5x01428MnPwio+mREaoao4U7ClhdRNyMTFQzlfcZMAFi/14OtrWP89cxEi9ATpnSnv2vjwnWO166D54Ll70KxwN3aBJSxuXQP0ENhYLc8J5K9/rFl9iD3NK12eHVieL33/sMqKYcBoxlRoxbu21iGvHK/TRP7keHVU1cZhdIDddp5CowVbdriOtDnFRJBAcDfyMz4d9LDemKhg/fngwM208R44BcD5/Vu6Kqfc8Eg9A4f9V8xzZcmkPWCqxsffY1pvuDG9t7cNWkG2IVmzXlxDe/poHkOKO8L02VSiuyg1z3i9diQ+KhSguV9xLmg=
-  - secure: oj8zXrWW61nit5tWeRXgxwlm3kxkAOi9gwNnYxIG3MgiN05vpNrBt0Bq9/yaqlvxoUMZd+USSk+NMENk36v2nVN7z2Z0Setcah3zzOC54JsOUzFYtdJona2HYSfEKLNz9yWqgFt1Ih/EfcZGpdT0gFwHDodO5okFcoRzYCM6Gl0vQ6TKMcF+fBmD5PTDx+1gyr9kaDpewWQFM/SuokW0xsWdgKBPPYjN31cdFEJ2phEoSRYvQfXe3bO5DDmJNIGAw/wLdbv0qKZussCz13DFEhDwTQBB2aDPx/fH9V8+o4T4mN4fNuXYjHDadf9urwcQBscwdxVQdYomFkrG0f8dJIL8N+4eq5/tGTLqNtu9vaM52FuXAcAxhIrlX7dVDqrjqKrS6z4had8SxpAU3sqjS9nOJny/OwiGohhPbMSORDV9xYoYfK7yGCdeWTfsSI7nciHfp2NJqmVXYRA5X1HPXZS9K9Ln8+y6fRHCWgaIv7S3wlJwVGfqzFHUsEGGEbo4Fs3/fLfPweMggMPqWWljWEdrBZtGBseDeWLTK0qbGCXs7aDNxNGHSXR1PdZ+cW3GMKKAygr+B4VsZfAWUP8Vyl2QW6PR93VHRpC8jc2BrYrWDSHJDqATImSIy7MpgHLUyfVPN3WzEOWX+Xpp16fhjKMp0gWIPBMUOBxhbF5FW1s=
+  - secure: 0N6HNlO2bAAO/x2u8u3wFykIElbVuZ8VIzFfGoshTq+tOpEpVs0eXhIy92jJUCEOCnfUNwLppn6HYURqFsB6lKA2ZkVE5JVVFdtxw5J6MIHrEbLH7H/TakrifaqaCdms/68SBPwVKa2D0Mgsy1Rdz1E/C4/VPn9uJUH1ESdZWCCSRt1NNvB/s3a8UYXWEJjullRZ1YPrmqBOrvjkz3YBJ0qqatQyusERT5QQ8GLkoKhot8B7t7tzbv3/eaQNfPQMNxFAY2hufavVJ/DV8+8JG6OkK2TN3O0SinV40um3EEv1kwCyVmHG2Js5YBzD7RlmsTzlMnbPhyXvXHImwOl04vZqBttVTNOqzAK6OYb1qku3Obvphqky5BYM2wFLVr0IYx80eFaqP/Iq5ersNQUISA5ys3spKVn36JmtneCe6u4TMFvUZBpwdf+e7gJozRobmr4pYIdej8J8v5fptwxyKeD3QbY6iM0AvznTAFdbtRAA1jkt2qQqhYLN4aeaTBnAhO56vNcPFep/z4NyWvI7IJcx1Mn/Z5DkynbAx+oIRT6tzJ9KG//E1D6pb8mO1n3IucrZgd3zwAt+nGYBoOsMVVAuZr1wqSr+gnVxm81+DcYUZZ5cNbq+qb/A/bKvqAXoCiy00qFX3IXDiw38hRXmJkUwL3LXeBrhgG3Ts584zn4=
+  - secure: IDdoMl8dxVo6UCCZ1k4lAIVEBIp+WzkntU+N9iv2i7duZF/GnH2Jt5WgSa5i/NOvC4To4FeEaB0WHNu4NHQ9C2+oDJvVuXKPC8OVT7UjI8VviJdmGisiDUFoBPiGwhvCBnkmpRimnzUThut7WbTny7HT7FFm6H+bQQ1qmKVIM0oc+3eHIczKE0DM1L20Lk4S5VSrbBF3jWsfWv4M3CbrYwzJ24fyImn5VWi0CLfQBa8MaaJI9uaGhUIIyRHZE4nXPUnfjb8yxZEO6c3VY0GAjXIn5gI4uQSuEn2y+NlGvvgJjO5zky3o00zBH9/31reafoxgi9upVvnNazXfjS4FLVcIl1QDKDxx705XYWRAU91jRwWQYPIiyKDpPtFi7MqbbJQdoqVSCafBEDFFcSitWV0itUW1HeRYeolUi2YGJ2Ed4kNmxRGW3w0IOcrtGMnIQh2/QCkz4PNZO5QcF/2qXGt0rheqiRuVHRQrFyCS+iilUBxfpKmDXqa/TegBQYUP3u+CTf4NjqQY19SgS8LHHAmD3wC+c90aZYfMoEJOK/mDLtIeBM2uFPLXPDBF6B5EFa96SouUHBkhGJ25/d9bwthPVQLlt8N512JgwSjNBNZdG10TgNDgwsY7EZGTH1d5Z3ncaeMQZjWmLUiJJc1X312R748VyruCsMYCPGSF0mg=
 branches:
   only:
   - master
@@ -22,8 +21,8 @@ script:
   -X main.rev=$TRAVIS_COMMIT" -a -tags netgo
 after_success:
 - if [ "$TRAVIS_BRANCH" == "master" -a "$TRAVIS_PULL_REQUEST" == "false" ]; then docker
-  build -t "nytimes/drone-gdm:latest" . ; docker login -e="$DOCKER_EMAIL" -u="$DOCKER_USERNAME"
-  -p="$DOCKER_PASSWORD" ; docker push "nytimes/drone-gdm:latest"; fi
+  build -t "nytimes/drone-gdm:latest" . ; docker login -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD"
+  ; docker push "nytimes/drone-gdm:latest"; fi
 - if [ "x$TRAVIS_TAG" != "x" -a "$TRAVIS_PULL_REQUEST" == "false" ]; then docker build
-  -t "nytimes/drone-gdm:$TRAVIS_TAG" . ; docker login -e="$DOCKER_EMAIL" -u="$DOCKER_USERNAME"
-  -p="$DOCKER_PASSWORD" ; docker push "nytimes/drone-gdm:$TRAVIS_TAG"; fi
+  -t "nytimes/drone-gdm:$TRAVIS_TAG" . ; docker login -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD"
+  ; docker push "nytimes/drone-gdm:$TRAVIS_TAG"; fi
