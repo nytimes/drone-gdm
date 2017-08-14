@@ -6,8 +6,7 @@ drone-gdm
 A simple drone plugin which wraps [Google Deployment Manager](https://cloud.google.com/deployment-manager/docs/).
 
 Features:
- * _Create or acquire semantics_ - Set the desired `state` and the plugin
-   determines whether to create, update, or delete.
+ * Set the desired `state` (absent, present, or latest) and the plugin determines whether to create, update, or delete.
  * Support for [GDM Beta Composite Types](https://cloud.google.com/deployment-manager/docs/configuration/templates/create-composite-types)
 
 Usage
