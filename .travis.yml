@@ -13,7 +13,7 @@ env:
 branches:
   only:
   - master
-  - "/^\\d+\\.\\d+\\.\\d+/"
+  - "/^\\d+\\.\\d+\\.\\d+\w*/"
 script:
 - go vet
 - go test github.com/nytimes/drone-gdm/plugin
