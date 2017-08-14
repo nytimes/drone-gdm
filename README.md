@@ -1,7 +1,7 @@
 drone-gdm
 =========
 
-![Travis CI Build Badge](https://travis-ci.org/nytimes/drone-gdm.svg?branch=master)
+[![Build Status](https://travis-ci.org/NYTimes/drone-gdm.svg?branch=master)](https://travis-ci.org/NYTimes/drone-gdm)
 
 A simple drone plugin which wraps [Google Deployment Manager](https://cloud.google.com/deployment-manager/docs/).
 
