@@ -101,7 +101,7 @@ func (command *GdmDeploymentCmd) Options(context *GdmPluginContext, spec *GdmCon
 			i := 0
 			var propPairs []string
 			for k, v := range spec.Properties {
-				propPairs[i] = fmt.Sprintf("%s:%v", k, v)
+				propPairs = append(propPairs, fmt.Sprintf("%s:%v", k, v))
 				i++
 			}
 
