@@ -38,12 +38,20 @@ const escape = "\x1b"
 
 // Function used to run gcloud
 func RunGcloud(context *GdmPluginContext, args ...string) *GcloudResult {
+	var qualifier string
+	if context.DryRun {
+		qualifier = " (dry run)"
+	}
+
+	if context.Verbose {
+		fmt.Printf("drone-gdm%s:\n\t\"%s[32m%s %s%s[0m\"\n",
+			qualifier, escape, context.GcloudPath,
+			strings.Join(args, " \\\n\t\t"), escape)
+	}
+
 	command := exec.Command(context.GcloudPath, args...)
 	result := bindResult(command)
 	if !context.DryRun {
-		if context.Verbose {
-			fmt.Printf("drone-gdm:\t\"%s[32m%s %s%s[0m\"\n", escape, context.GcloudPath, strings.Join(args, " "), escape)
-		}
 		err := command.Run()
 
 		if err == nil {
@@ -51,10 +59,8 @@ func RunGcloud(context *GdmPluginContext, args ...string) *GcloudResult {
 		}
 	} else {
 		result.Okay = true
-		if context.Verbose {
-			fmt.Printf("drone-gdm (dry run):\t\"%s[32m%s %s%s[0m\"\n", escape, context.GcloudPath, strings.Join(args, " "), escape)
-		}
 	}
+
 	return result
 }
 
