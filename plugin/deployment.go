@@ -126,7 +126,7 @@ func (command *GdmDeploymentCmd) Options(context *GdmPluginContext, spec *GdmCon
 		}
 
 	case "update":
-		options = addOptIfPresent(options, configPath, "--configPath")
+		options = addOptIfPresent(options, configPath, "--config")
 		options = addOptIfPresent(options, spec.Description, "--description")
 		options = addOptIfPresent(options, properties, "--properties")
 		options = addOptIfPresent(options, spec.CreatePolicy, "--create-policy")
