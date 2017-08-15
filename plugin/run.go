@@ -36,6 +36,12 @@ type GcloudResult struct {
 
 const escape = "\x1b"
 
+func verbose(context *GdmPluginContext, fspec string, args ...interface{}) {
+	if context.Verbose {
+		fmt.Printf(fspec, args...)
+	}
+}
+
 // Function used to run gcloud
 func RunGcloud(context *GdmPluginContext, args ...string) *GcloudResult {
 	var qualifier string
@@ -43,11 +49,9 @@ func RunGcloud(context *GdmPluginContext, args ...string) *GcloudResult {
 		qualifier = " (dry run)"
 	}
 
-	if context.Verbose {
-		fmt.Printf("drone-gdm%s:\n\t\"%s[32m%s %s%s[0m\"\n",
-			qualifier, escape, context.GcloudPath,
-			strings.Join(args, " \\\n\t\t"), escape)
-	}
+	verbose(context, "drone-gdm%s:\n\t\"\x1b[34m%s\x1b[0m \x1b[32m%s\x1b[0m\"\n",
+		qualifier, context.GcloudPath,
+		strings.Join(args, " \\\n\t\t"))
 
 	command := exec.Command(context.GcloudPath, args...)
 	result := bindResult(command)
@@ -61,6 +65,7 @@ func RunGcloud(context *GdmPluginContext, args ...string) *GcloudResult {
 		result.Okay = true
 	}
 
+	verbose(context, "\tStatus Okay: \x1b[33m%v\x1b[0m\n", result.Okay)
 	return result
 }
 

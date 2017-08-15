@@ -40,34 +40,6 @@ type GdmCommand interface {
 //  - Check the present state of the deployment
 //  - Execute a gdm command to transform present --> desired state
 func GdmExecute(context *GdmPluginContext, spec *GdmConfigurationSpec, gdmTokenPath string) error {
-
-	if context.Verbose {
-		fmt.Println("drone-gdm: Deployment Parameters:")
-		fmt.Printf("    Dir:         \"%s\"\n", context.Dir)
-		fmt.Printf("    Token:       %s\n", "<REDACTED>")
-		fmt.Printf("    GcloudPath:  \"%s\"\n", context.GcloudPath)
-		fmt.Printf("    Verbose:     %t\n", context.Verbose)
-		fmt.Printf("    DryRun:      %t\n", context.DryRun)
-		fmt.Printf("    Project:     \"%s\"\n", context.Project)
-		fmt.Printf("    Deployment:  \"%s\"\n", spec.Name)
-		fmt.Printf("    State:       \"%s\"\n", spec.State)
-		fmt.Printf("    Path:        \"%s\"\n", spec.Path)
-		fmt.Printf("    Description: \"%s\"\n", spec.Description)
-		fmt.Printf("    Preview:     %t\n", context.Preview)
-		fmt.Printf("    Async:       %t\n", context.Async)
-
-		if len(spec.Properties) > 0 {
-			fmt.Println("    Properties: {")
-			for k, v := range spec.Properties {
-				fmt.Printf("        %s: \"%v\"\n", k, v)
-			}
-			fmt.Println("    }")
-		} else {
-			fmt.Println("    Properties: {}")
-		}
-
-	}
-
 	command := getGdmCommand(spec)
 	if command == nil {
 		return fmt.Errorf("\"%s\" is not a supported command", spec.Group)
@@ -146,12 +118,10 @@ func executeDeploymentAction(context *GdmPluginContext, spec *GdmConfigurationSp
 	// Engage!
 	result := RunGcloud(context, args...)
 	if !result.Okay {
-		fmt.Print("fail\n")
 		return fmt.Errorf("error performing \"%s\" action on \"%s\": %s\n", action, spec.Name, result.Stderr.String())
 	}
 
-	fmt.Print(result.Stdout.String())
-	fmt.Print("done\n")
+	verbose(context, "Results: %s\n", result.Stdout.String())
 	return nil
 }
 
