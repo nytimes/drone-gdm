@@ -41,6 +41,9 @@ func RunGcloud(context *GdmPluginContext, args ...string) *GcloudResult {
 	command := exec.Command(context.GcloudPath, args...)
 	result := bindResult(command)
 	if !context.DryRun {
+		if context.Verbose {
+			fmt.Printf("drone-gdm:\t\"%s[32m%s %s%s[0m\"\n", escape, context.GcloudPath, strings.Join(args, " "), escape)
+		}
 		err := command.Run()
 
 		if err == nil {
