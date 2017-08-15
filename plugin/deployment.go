@@ -99,7 +99,7 @@ func (command *GdmDeploymentCmd) Options(context *GdmPluginContext, spec *GdmCon
 
 		if noProp > 0 {
 			i := 0
-			propPairs := make([]string, noProp)
+			var propParts []string
 			for k, v := range spec.Properties {
 				propPairs[i] = fmt.Sprintf("%s:%v", k, v)
 				i++
