@@ -75,23 +75,7 @@ func main() {
 		errBail(err)
 	}
 
-	// Write credentials to tmp file to be picked up by the 'gcloud' command.
-	// This is inside the ephemeral plugin container, not on the host:
-	err = ioutil.WriteFile(gdmTokenPath, []byte(context.Token), 0600)
-	if err != nil {
-		errBail(fmt.Errorf("error writing token file: %s\n", err))
-	}
-
-	// Ensure the token is cleaned up, no matter exit status:
-	defer func() {
-		err := os.Remove(gdmTokenPath)
-		if err != nil {
-			// No need to panic on error, due to likely ephemeral mount
-			fmt.Printf("drone-gdm: WARNING: error removing token file: %s\n", err)
-		}
-	}()
-
-	err = plugin.ActivateServiceAccount(context, gdmTokenPath)
+	err = performTokenAuthentication(context)
 	if err != nil {
 		errBail(err)
 	}
@@ -104,6 +88,27 @@ func main() {
 	}
 
 	os.Exit(0)
+}
+
+func performTokenAuthentication(context *plugin.GdmPluginContext) error {
+	// Write credentials to tmp file to be picked up by the 'gcloud' command.
+	// This is inside the ephemeral plugin container, not on the host:
+	err := ioutil.WriteFile(gdmTokenPath, []byte(context.Token), 0600)
+	if err != nil {
+		return fmt.Errorf("error writing token file: %s\n", err)
+	}
+
+	// Ensure the token is cleaned up, no matter exit status:
+	defer func() {
+		err := os.Remove(gdmTokenPath)
+		if err != nil {
+			// No need to panic on error, due to likely ephemeral mount
+			fmt.Printf("drone-gdm: WARNING: error removing token file: %s\n", err)
+		}
+	}()
+
+	err = plugin.ActivateServiceAccount(context, gdmTokenPath)
+	return err
 }
 
 // EOF
