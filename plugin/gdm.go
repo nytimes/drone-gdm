@@ -22,8 +22,6 @@ package plugin
 
 import (
 	"fmt"
-	"io/ioutil"
-	"os"
 	"path/filepath"
 	"strings"
 )
@@ -69,22 +67,6 @@ func GdmExecute(context *GdmPluginContext, spec *GdmConfigurationSpec, gdmTokenP
 		}
 
 	}
-
-	// Write credentials to tmp file to be picked up by the 'gcloud' command.
-	// This is inside the ephemeral plugin container, not on the host:
-	err := ioutil.WriteFile(gdmTokenPath, []byte(context.Token), 0600)
-	if err != nil {
-		return fmt.Errorf("error writing token file: %s\n", err)
-	}
-
-	// Ensure the token is cleaned up, no matter exit status:
-	defer func() {
-		err := os.Remove(gdmTokenPath)
-		if err != nil {
-			// No need to panic on error, due to likely ephemeral mount
-			fmt.Printf("drone-gdm: WARNING: error removing token file: %s\n", err)
-		}
-	}()
 
 	command := getGdmCommand(spec)
 	if command == nil {
