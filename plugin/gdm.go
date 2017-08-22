@@ -115,6 +115,11 @@ func executeDeploymentAction(context *GdmPluginContext, spec *GdmConfigurationSp
 		args = append(args, "--async")
 	}
 
+	// Don't request user input for delete actions.
+	if action == "delete" {
+		args = append(args, "-q")
+	}
+
 	// Engage!
 	result := RunGcloud(context, args...)
 	if !result.Okay {
