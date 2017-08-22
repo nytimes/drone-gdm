@@ -1,6 +1,10 @@
 Releases
 ========
 
+1.0.7b - 2017/08/14
+-------------------
+ - Use `-q` option to prevent prompting on delete
+
 1.0.6b - 2017/08/14
 -------------------
 Initial public BETA
