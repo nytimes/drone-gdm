@@ -45,7 +45,7 @@ func (command *GdmDeploymentCmd) Exists(context *GdmPluginContext, spec *GdmConf
 	args := append(gcmd, []string{
 		"list",
 		"--simple-list",
-		fmt.Sprintf("--filter=name:%s", spec.Name),
+		fmt.Sprintf("--filter=name=%s", spec.Name),
 		fmt.Sprintf("--project=%s", context.Project),
 	}...)
 

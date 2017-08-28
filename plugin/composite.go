@@ -46,7 +46,7 @@ func (command *GdmCompositeCmd) Exists(context *GdmPluginContext, spec *GdmConfi
 		"list",
 		fmt.Sprintf("--project=%s", context.Project),
 		fmt.Sprintf("--provider-project=%s", context.Project),
-		fmt.Sprintf("--filter=types.name:%s", spec.Name),
+		fmt.Sprintf("--filter=types.name=%s", spec.Name),
 	}...)
 
 	result := RunGcloud(context, args...)
