@@ -1,10 +1,10 @@
-package: github.com/andrew-canaday/glide
-homepage: https://andrew-canaday.github.io/glide
+package: github.com/nytimes/drone-gdm
+homepage: https://nytimes.github.io/drone-gdm
 license: Apache 2.0
 owners:
 - name: Andrew Canaday
   email: andrew.canaday@nytimes.com
-  homepage: https://github.com/andrew-canaday/
+  homepage: https://github.com/nytimes/
 testImport:
 - package: github.com/stretchr/testify/assert
 
