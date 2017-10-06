@@ -1,6 +1,6 @@
 FROM alpine:3.4
 
-ENV GOOGLE_CLOUD_SDK_VERSION=167.0.0
+ENV GOOGLE_CLOUD_SDK_VERSION=174.0.0
 ENV CLOUDSDK_APP_RUNTIME_ROOT=/google-cloud-sdk/platform/ext-runtime/
 RUN apk add --no-cache curl python
 
