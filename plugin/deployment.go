@@ -119,9 +119,17 @@ func (command *GdmDeploymentCmd) Options(context *GdmPluginContext, spec *GdmCon
 	}
 
 	configPath := getAdjustedPath(spec.Path, context.Dir)
+
+	var fileOption string
+	if strings.HasSuffix(configPath, ".yml") || strings.HasSuffix(configPath, ".yaml") {
+		fileOption = "--config"
+	} else {
+		fileOption = "--template"
+	}
+
 	switch action {
 	case "create":
-		options = addOptIfPresent(options, configPath, "--config")
+		options = addOptIfPresent(options, configPath, fileOption)
 		options = addOptIfPresent(options, spec.Description, "--description")
 		labels := mapAsOptions(spec.Labels, "=", ",")
 		options = addOptIfPresent(options, labels, "--labels")
@@ -131,7 +139,7 @@ func (command *GdmDeploymentCmd) Options(context *GdmPluginContext, spec *GdmCon
 		}
 
 	case "update":
-		options = addOptIfPresent(options, configPath, "--config")
+		options = addOptIfPresent(options, configPath, fileOption)
 		options = addOptIfPresent(options, spec.Description, "--description")
 		options = addOptIfPresent(options, properties, "--properties")
 		options = addOptIfPresent(options, spec.CreatePolicy, "--create-policy")
