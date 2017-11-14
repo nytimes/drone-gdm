@@ -75,7 +75,7 @@ func ActivateServiceAccount(context *GdmPluginContext, gdmTokenPath string) erro
 	}
 
 	result := RunGcloud(context, args...)
-	if !result.Okay {
+	if result.Error != nil {
 		return fmt.Errorf("error activating service account: %s\n", result.Stderr.String())
 	}
 	return nil
@@ -122,7 +122,7 @@ func executeDeploymentAction(context *GdmPluginContext, spec *GdmConfigurationSp
 
 	// Engage!
 	result := RunGcloud(context, args...)
-	if !result.Okay {
+	if result.Error != nil {
 		return fmt.Errorf("error performing \"%s\" action on \"%s\": %s\n", action, spec.Name, result.Stderr.String())
 	}
 

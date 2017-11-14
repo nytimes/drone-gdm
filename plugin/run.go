@@ -31,7 +31,7 @@ import (
 type GcloudResult struct {
 	Stdout bytes.Buffer
 	Stderr bytes.Buffer
-	Okay   bool
+	Error  error
 }
 
 const escape = "\x1b"
@@ -56,16 +56,16 @@ func RunGcloud(context *GdmPluginContext, args ...string) *GcloudResult {
 	command := exec.Command(context.GcloudPath, args...)
 	result := bindResult(command)
 	if !context.DryRun {
-		err := command.Run()
-
-		if err == nil {
-			result.Okay = true
-		}
+		result.Error = command.Run()
 	} else {
-		result.Okay = true
+		result.Error = nil
 	}
 
-	verbose(context, "\tStatus Okay: \x1b[33m%v\x1b[0m\n", result.Okay)
+	verbose(context, "\tStatus Okay: \x1b[33m%t\x1b[0m\n", result.Error == nil)
+
+	if result.Error != nil {
+		fmt.Printf("Error executing gcloud: %v\n", result.Error)
+	}
 	return result
 }
 
@@ -79,7 +79,7 @@ func bindResult(command *exec.Cmd) *GcloudResult {
 
 	command.Stdout = &g.Stdout
 	command.Stderr = &g.Stderr
-	g.Okay = false
+	g.Error = nil
 
 	return g
 }

@@ -12,7 +12,7 @@ func TestBasicRun(t *testing.T) {
 
 	result := RunGcloud(context, "Open", "the", "pod", "bay", "doors,", "Hal")
 
-	if assert.Equal(t, true, result.Okay) {
+	if assert.Equal(t, true, result.Error == nil) {
 		cmdOut := strings.TrimSpace(result.Stdout.String())
 		assert.Equal(t, "Open the pod bay doors, Hal", cmdOut)
 	}
@@ -24,5 +24,5 @@ func TestMissingCmd(t *testing.T) {
 
 	result := RunGcloud(context, "Open", "the", "pod", "bay", "doors,", "Hal")
 
-	assert.Equal(t, false, result.Okay, "Function fails due to missing command")
+	assert.Equal(t, false, result.Error == nil, "Function fails due to missing command")
 }

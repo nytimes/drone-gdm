@@ -50,7 +50,7 @@ func (command *GdmCompositeCmd) Exists(context *GdmPluginContext, spec *GdmConfi
 	}...)
 
 	result := RunGcloud(context, args...)
-	if !result.Okay {
+	if result.Error != nil {
 		return deployExists, fmt.Errorf("error listing types: %s\n", result.Stderr.String())
 	}
 
