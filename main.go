@@ -53,7 +53,7 @@ func errBail(err error) {
 // - Validates parsed plugin parameters
 // - Executes google deployment manager, via gcloud
 func main() {
-	fmt.Printf("Drone GDM Plugin %s - built from %s:\n", lbl, rev)
+	fmt.Printf("Test Drone GDM Plugin %s - built from %s:\n", lbl, rev)
 
 	context := plugin.NewGdmPluginContext()
 
