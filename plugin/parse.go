@@ -76,6 +76,11 @@ func ParsePluginParams(context interface{}) error {
 			var jsonIn interface{}
 			json.Unmarshal([]byte(val), &jsonIn)
 			if jsonIn != nil {
+				name := v.Type().Field(i).Name
+				fmt.Println(name)
+				if name != "Token" {
+					// fmt.Println(val)
+				}
 				field.Set(reflect.ValueOf(jsonIn))
 				break
 			}
