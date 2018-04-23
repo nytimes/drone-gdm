@@ -69,7 +69,7 @@ func ParsePluginParams(context interface{}) error {
 		name := v.Type().Field(i).Name
 		fmt.Println(name)
 		if name != "Token" {
-			// fmt.Println(val)
+			fmt.Println(val)
 		}
 
 		switch field.Interface().(type) {
