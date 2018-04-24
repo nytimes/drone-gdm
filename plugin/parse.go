@@ -66,16 +66,18 @@ func ParsePluginParams(context interface{}) error {
 			continue
 		}
 
-		name := v.Type().Field(i).Name
-		fmt.Println(name)
-		if name != "Token" {
-			fmt.Println(val)
-		}
-
 		switch field.Interface().(type) {
 		// Copy strings, verbatim:
 		case string:
 			field.SetString(val)
+
+		case []GdmConfigurationSpec:
+			var jsonIn []GdmConfigurationSpec
+			json.Unmarshal([]byte(val), &jsonIn)
+			if jsonIn != nil {
+				field.Set(reflect.ValueOf(jsonIn))
+				break
+			}
 
 		// Else, do a json unmarshal:
 		default:
