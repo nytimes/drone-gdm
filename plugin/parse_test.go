@@ -73,3 +73,23 @@ func TestMap(t *testing.T) {
 	// This was not populated:
 	assert.Empty(t, myObj.Options)
 }
+
+// map[string]string:
+type gdmStruct struct {
+	Configurations []GdmConfigurationSpec `drone:"env=TEST_CONFIGURATIONS"`
+}
+
+func TestGdmConfigurationSpec(t *testing.T) {
+	os.Setenv("TEST_CONFIGURATIONS", "[{\"description\":\"Test desc\",\"properties\":{\"env\":\"test\"}}]")
+
+
+	myObj := gdmStruct{}
+
+	err := ParsePluginParams(&myObj)
+
+	assert.Nil(t, err)
+
+	assert.NotNil(t, myObj.Configurations)
+	assert.Equal(t, "Test desc", myObj.Configurations[0].Description)
+	assert.Equal(t, "test", myObj.Configurations[0].Properties["env"])
+}
