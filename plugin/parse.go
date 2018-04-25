@@ -66,28 +66,21 @@ func ParsePluginParams(context interface{}) error {
 			continue
 		}
 
-		switch field.Interface().(type) {
-		// Copy strings, verbatim:
-		case string:
+		switch field.Kind() {
+		case reflect.String:
 			field.SetString(val)
 
-		case []GdmConfigurationSpec:
-			var jsonIn []GdmConfigurationSpec
-			json.Unmarshal([]byte(val), &jsonIn)
-			if jsonIn != nil {
-				field.Set(reflect.ValueOf(jsonIn))
-				break
-			}
-
-		// Else, do a json unmarshal:
 		default:
-			var jsonIn interface{}
-			json.Unmarshal([]byte(val), &jsonIn)
-			if jsonIn != nil {
-				field.Set(reflect.ValueOf(jsonIn))
-				break
+			jsonIn := reflect.New(field.Type()).Interface()
+			err := json.Unmarshal([]byte(val), jsonIn)
+			if err != nil {
+				return err
 			}
 
+			jsonVal := reflect.ValueOf(jsonIn)
+			if jsonIn != nil {
+				field.Set(reflect.Indirect(jsonVal))
+			}
 		}
 	}
 

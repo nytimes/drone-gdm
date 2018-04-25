@@ -44,6 +44,26 @@ func TestBool(t *testing.T) {
 	}
 }
 
+// Integers:
+type intStruct struct {
+	Flag0 int `drone:"env=TEST_FLAG0,required"`
+	Flag1 int `drone:"env=TEST_FLAG1,required"`
+	Flag2 int `drone:"env=TEST_FLAG2"`
+}
+
+func TestInteger(t *testing.T) {
+	os.Setenv("TEST_FLAG0", "0")
+	os.Setenv("TEST_FLAG1", "1")
+
+	myObj := intStruct{}
+
+	err := ParsePluginParams(&myObj)
+	if assert.Nil(t, err) {
+		assert.Equal(t, myObj.Flag0, 0)
+		assert.Equal(t, myObj.Flag1, 1)
+	}
+}
+
 // map[string]string:
 type mapStruct struct {
 	Properties map[string]interface{} `drone:"env=TEST_PROPERTIES,required"`
@@ -81,7 +101,6 @@ type gdmStruct struct {
 
 func TestGdmConfigurationSpec(t *testing.T) {
 	os.Setenv("TEST_CONFIGURATIONS", "[{\"description\":\"Test desc\",\"properties\":{\"env\":\"test\"}}]")
-
 
 	myObj := gdmStruct{}
 
