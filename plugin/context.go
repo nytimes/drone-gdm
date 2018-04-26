@@ -47,7 +47,7 @@ type GdmPluginContext struct {
 	DryRun     bool   `drone:"env=PLUGIN_DRY_RUN"`
 
 	// gcloud:
-	Token   string `drone:"env=PLUGIN_TOKEN"`
+	Token   string `drone:"env=TOKEN"`
 	Project string `drone:"env=PLUGIN_PROJECT"`
 
 	// deployment-manager:
