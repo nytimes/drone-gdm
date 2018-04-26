@@ -37,7 +37,7 @@ configuration or template with `--properties=action:<action from table above>`.
 deploy:
   gdm:
     # Indicate where to acquire the image:
-    image: nytimes/drone-gdm:1.0.10
+    image: nytimes/drone-gdm:1.1.0b
 
     # Provided JSON auth token (from drone secrets):
     gcloudPath: /bin/gcloud   # path to gcloud executable
