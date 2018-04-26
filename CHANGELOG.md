@@ -1,6 +1,10 @@
 Releases
 ========
 
+1.1.0 - 2018/04/26
+------------------
+ - Add drone 0.8 compatibility
+
 1.0.10 - 2017/11/14
 -------------------
  - Preserve additional error information for failed gcloud invocations

@@ -5,9 +5,11 @@ drone-gdm
 
 A simple drone plugin which wraps [Google Deployment Manager](https://cloud.google.com/deployment-manager/docs/).
 
-Features:
+### Features
  * Set the desired `state` (absent, present, or latest) and the plugin determines whether to create, update, or delete.
  * Support for [GDM Beta Composite Types](https://cloud.google.com/deployment-manager/docs/configuration/templates/create-composite-types)
+### Compatibility
+Drone-GDM has been tested with drone *0.4* and *0.8*.
 
 Usage
 -----
@@ -20,10 +22,10 @@ The `state` can be one of `absent`, `present`, or `latest`.
 | Plugin "state" | Object Exists? | Action      |
 | -------------- | -------------- | ----------- |
 | present        | no             | `create`    |
-| present        | yes            | _no action_ |
+| present        | yes            | _no action_   |
 | latest         | no             | `create`    |
 | latest         | yes            | `update`    |
-| absent         | no             | _no action_ |
+| absent         | no             | _no action_   |
 | absent         | yes            | `delete`    |
 
 The specific `action` selected by drone-gdm can be provided to your template
@@ -35,7 +37,7 @@ configuration or template with `--properties=action:<action from table above>`.
 deploy:
   gdm:
     # Indicate where to acquire the image:
-    image: nytimes/drone-gdm
+    image: nytimes/drone-gdm:1.0.10
 
     # Provided JSON auth token (from drone secrets):
     gcloudPath: /bin/gcloud   # path to gcloud executable
