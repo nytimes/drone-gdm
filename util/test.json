@@ -9,6 +9,10 @@
 		"preview": false,
 		"async": false,
 		"dryRun": true,
+		"vars": {
+		  "env": "dev"
+		},
+		"configFile": "./test.yaml",
 		"configurations": [
 			{
 				"name": "my-deployment1",

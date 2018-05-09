@@ -22,7 +22,9 @@ package plugin
 
 import (
 	"fmt"
+	"os"
 	"strings"
+	"text/template"
 )
 
 // This is the context object we'll use to store the internal state used
@@ -42,9 +44,10 @@ type GdmPluginContext struct {
 	Tag         string `drone:"env=DRONE_TAG"`
 
 	// drone-gdm:
-	GcloudPath string `drone:"env=PLUGIN_GCLOUD_PATH"`
-	Verbose    bool   `drone:"env=PLUGIN_VERBOSE"`
-	DryRun     bool   `drone:"env=PLUGIN_DRY_RUN"`
+	GcloudPath string            `drone:"env=PLUGIN_GCLOUDPATH"`
+	Verbose    bool              `drone:"env=PLUGIN_VERBOSE"`
+	DryRun     bool              `drone:"env=PLUGIN_DRYRUN"`
+	Vars       map[string]string `drone:"env=PLUGIN_VARS"`
 
 	// gcloud:
 	Token   string `drone:"env=TOKEN"`
@@ -53,6 +56,7 @@ type GdmPluginContext struct {
 	// deployment-manager:
 	Preview        bool                   `drone:"env=PLUGIN_PREVIEW"`
 	Async          bool                   `drone:"env=PLUGIN_ASYNC"`
+	ConfigFile     string                 `drone:"env=PLUGIN_CONFIGFILE"`
 	Configurations []GdmConfigurationSpec `drone:"env=PLUGIN_CONFIGURATIONS"`
 
 	// Internal use only:
@@ -101,13 +105,33 @@ func (context *GdmPluginContext) Validate() error {
 	return nil
 }
 
+func (context *GdmPluginContext) loadConfigurations() error {
+	if context.ConfigFile == "" {
+		return nil
+	}
+
+	t, err := template.ParseFiles(context.ConfigFile)
+	if err != nil {
+		return err
+	}
+
+	return t.Execute(os.Stdout, context.Vars)
+}
+
 // Parse GdmPluginContext using ParsePluginParams.
 // Set parseOkay flag accordingly.
 func (context *GdmPluginContext) Parse() error {
 	err := ParsePluginParams(context)
-	if err == nil {
-		context.parseOkay = true
+	if err != nil {
+		return err
 	}
+
+	err = context.loadConfigurations()
+	if err != nil {
+		return err
+	}
+
+	context.parseOkay = (err == nil)
 	return err
 }
 
