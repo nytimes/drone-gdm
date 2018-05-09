@@ -32,6 +32,16 @@ The specific `action` selected by drone-gdm can be provided to your template
 as a property, by specifying `passAction: true`. This will invoke your
 configuration or template with `--properties=action:<action from table above>`.
 
+### Example
+```Yaml
+deploy:
+  gdm:
+    # Indicate where to acquire the image:
+    image: nytimes/drone-gdm:1.1.0b
+
+    # Provided JSON auth token (from drone secrets):
+    gcloudPath: /bin/gcloud   # path to gcloud executable
+    verbose: false            # (optional)
     dryRun: false             # (optional)
     token: >
       $$GOOGLE_JSON_CREDENTIALS
@@ -72,7 +82,7 @@ configuration or template with `--properties=action:<action from table above>`.
 deploy:
   gdm:
     # Indicate where to acquire the image:
-    image: nytimes/drone-gdm:1.1.0b
+    image: nytimes/drone-gdm:1.2.1a
 
     # Provided JSON auth token (from drone secrets):
     gcloudPath: /bin/gcloud   # path to gcloud executable
@@ -119,16 +129,6 @@ deploy:
 
 ```
 
-### Example
-```Yaml
-deploy:
-  gdm:
-    # Indicate where to acquire the image:
-    image: nytimes/drone-gdm:1.1.0b
-
-    # Provided JSON auth token (from drone secrets):
-    gcloudPath: /bin/gcloud   # path to gcloud executable
-    verbose: false            # (optional)
 ### Resources
  - [drone-gdm on Travis-CI](https://travis-ci.org/NYTimes/drone-gdm)
  - [drone-gdm on dockerhub](https://hub.docker.com/r/nytimes/drone-gdm/)
