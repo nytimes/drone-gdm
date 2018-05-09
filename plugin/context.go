@@ -111,7 +111,7 @@ func (context *GdmPluginContext) loadConfigurations() error {
 		return nil
 	}
 
-	t, err := template.ParseFiles(context.ConfigFile)
+	t, err := template.ParseFiles(getAdjustedPath(context.ConfigFile, context.Dir))
 	if err != nil {
 		return err
 	}
