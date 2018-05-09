@@ -32,7 +32,42 @@ The specific `action` selected by drone-gdm can be provided to your template
 as a property, by specifying `passAction: true`. This will invoke your
 configuration or template with `--properties=action:<action from table above>`.
 
-### Example with External Configurations
+    dryRun: false             # (optional)
+    token: >
+      $$GOOGLE_JSON_CREDENTIALS
+    project: my-gcp-project   # Da--project
+    preview: false            # --preview
+    async: false              # --async
+
+    configurations:
+    - name:  my-deployment
+      group: deployment
+      state: present
+      path: ./my-deployment.yaml
+      description: A GDM Deployment
+      properties:    # mapped to gcloud '--properties=...'
+        myvar: myval # can be referenced in jinja as: {{ properties.myvar }}
+      labels:        # mapped to '--labels' or '--update-labels', as appropriate
+        mylabel: labelval
+      autoRollbackOnError: false
+      createPolicy: CREATE_OR_ACQUIRE # Optional: CREATE_OR_ACQUIRE or CREATE
+      deletePolicy: DELETE # Optional: DELETE or ABANDON
+      passAction: false # if true, pass action as property, e.g. "action:update"
+
+    - name:  my-composite
+      version: beta  # gcloud version to use
+      group: composite
+      state: present
+      path: ./my-composite.jinja
+      description: A GDM "Composite Type"
+      labels: # mapped to '--labels' or '--update-labels', as appropriate
+        mylabel: labelval
+      status: SUPPORTED # Optional: SUPPORTED, DEPRECATED, or EXPERIMENTAL
+      passAction: false
+
+```
+
+### Example with External Configurations (1.2.x alpha only!)
 ```Yaml
 deploy:
   gdm:
@@ -94,41 +129,6 @@ deploy:
     # Provided JSON auth token (from drone secrets):
     gcloudPath: /bin/gcloud   # path to gcloud executable
     verbose: false            # (optional)
-    dryRun: false             # (optional)
-    token: >
-      $$GOOGLE_JSON_CREDENTIALS
-    project: my-gcp-project   # Da--project
-    preview: false            # --preview
-    async: false              # --async
-
-    configurations:
-    - name:  my-deployment
-      group: deployment
-      state: present
-      path: ./my-deployment.yaml
-      description: A GDM Deployment
-      properties:    # mapped to gcloud '--properties=...'
-        myvar: myval # can be referenced in jinja as: {{ properties.myvar }}
-      labels:        # mapped to '--labels' or '--update-labels', as appropriate
-        mylabel: labelval
-      autoRollbackOnError: false
-      createPolicy: CREATE_OR_ACQUIRE # Optional: CREATE_OR_ACQUIRE or CREATE
-      deletePolicy: DELETE # Optional: DELETE or ABANDON
-      passAction: false # if true, pass action as property, e.g. "action:update"
-
-    - name:  my-composite
-      version: beta  # gcloud version to use
-      group: composite
-      state: present
-      path: ./my-composite.jinja
-      description: A GDM "Composite Type"
-      labels: # mapped to '--labels' or '--update-labels', as appropriate
-        mylabel: labelval
-      status: SUPPORTED # Optional: SUPPORTED, DEPRECATED, or EXPERIMENTAL
-      passAction: false
-
-```
-
 ### Resources
  - [drone-gdm on Travis-CI](https://travis-ci.org/NYTimes/drone-gdm)
  - [drone-gdm on dockerhub](https://hub.docker.com/r/nytimes/drone-gdm/)
