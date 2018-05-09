@@ -21,8 +21,9 @@
 package plugin
 
 import (
+	"bytes"
 	"fmt"
-	"os"
+	"gopkg.in/yaml.v2"
 	"strings"
 	"text/template"
 )
@@ -115,7 +116,22 @@ func (context *GdmPluginContext) loadConfigurations() error {
 		return err
 	}
 
-	return t.Execute(os.Stdout, context.Vars)
+	var buff bytes.Buffer
+	err = t.Execute(&buff, context.Vars)
+	if err != nil {
+		return err
+	}
+
+	var configurations []GdmConfigurationSpec
+	err = yaml.Unmarshal(buff.Bytes(), &configurations)
+	if err != nil {
+		return err
+	}
+
+	if len(configurations) != 0 {
+		context.Configurations = append(context.Configurations, configurations...)
+	}
+	return nil
 }
 
 // Parse GdmPluginContext using ParsePluginParams.
