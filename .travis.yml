@@ -21,8 +21,8 @@ script:
   -X main.rev=$TRAVIS_COMMIT" -a -tags netgo
 after_success:
 - if [ -n "$TRAVIS_TAG" ] && [ "$TRAVIS_PULL_REQUEST" == "false" ]; then
-    lastChar="${TRAVIS_TAG:((${#tag}-1)):1}"
-    if [ "$lastChar" == "a" ]; then
+    lastChar="${TRAVIS_TAG:((${#TRAVIS_TAG}-1)):1}"
+    if [ "${lastChar}" == "a" ]; then
       latestTag="alpha"
     elif [ "${lastChar}" == "b" ]; then
       latestTag="beta"
