@@ -138,15 +138,14 @@ func (context *GdmPluginContext) loadConfigurations() error {
 // Parse GdmPluginContext using ParsePluginParams.
 // Set parseOkay flag accordingly.
 func (context *GdmPluginContext) Parse() error {
-	verbose(context, "Environment variables for this run:")
-	for _, e := range os.Environ() {
-		ecomps := strings.Split(e, "=")
-		verbose(context, "\t\x1b[34m%s\x1b[00m\n", ecomps[0])
-	}
-	os.Exit(0)
-
 	err := ParsePluginParams(context)
 	if err != nil {
+		verbose(context, "Environment variables for this run:")
+		for _, e := range os.Environ() {
+			ecomps := strings.Split(e, "=")
+			verbose(context, "\t\x1b[34m%s\x1b[00m\n", ecomps[0])
+		}
+
 		return err
 	}
 
