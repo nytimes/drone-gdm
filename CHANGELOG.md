@@ -1,6 +1,14 @@
 Releases
 ========
 
+1.2.1a - 2018/05/09
+-------------------
+ - Use google-sdk base image
+
+1.2.0a - 2018/05/09
+-------------------
+ - Add external configuration ability
+
 1.1.0b - 2018/04/26
 -------------------
  - Add drone 0.8 compatibility
