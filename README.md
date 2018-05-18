@@ -9,7 +9,7 @@ A simple drone plugin which wraps [Google Deployment Manager](https://cloud.goog
 Starting with version `1.2.1a`, you can include drone-gdm by:
 * [specific release number](https://github.com/NYTimes/drone-gdm/releases) (see [dockerhub repo](https://hub.docker.com/r/nytimes/drone-gdm/tags/)).
 * the `latest` tag to get the latest _stable_ version
-* the `develop` tag to get
+* the `develop` tag to get the last thing that _built_
 * the `beta` tag to get the latest _beta_ release
 * the `alpha` tag to get the latest `alpha` release
 
