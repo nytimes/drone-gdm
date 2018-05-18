@@ -21,12 +21,13 @@ script:
   -X main.rev=$TRAVIS_COMMIT" -a -tags netgo
 after_success:
 - if [ "$TRAVIS_BRANCH" == "master" -a "$TRAVIS_PULL_REQUEST" == "false" ]; then
-    docker build -t "nytimes/drone-gdm:latest" . ;
+    docker build -t "nytimes/drone-gdm:develop" . ;
     docker login -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD" ;
-    docker push "nytimes/drone-gdm:latest";
+    docker push "nytimes/drone-gdm:develop";
   fi
 - if [ -n "$TRAVIS_TAG" ] && [ "$TRAVIS_PULL_REQUEST" == "false" ]; then
-    docker build -t "nytimes/drone-gdm:$TRAVIS_TAG" . ;
+    docker build -t "nytimes/drone-gdm:latest" -t "nytimes/drone-gdm:$TRAVIS_TAG" . ;
     docker login -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD" ;
     docker push "nytimes/drone-gdm:$TRAVIS_TAG";
+    docker push "nytimes/drone-gdm:latest";
   fi
