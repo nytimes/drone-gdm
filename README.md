@@ -5,10 +5,6 @@ drone-gdm
 
 A simple drone plugin which wraps [Google Deployment Manager](https://cloud.google.com/deployment-manager/docs/).
 
-:warning: `master` is a moving target, at times. When used in production
-environments, it is recommended that an [official releases](https://github.com/NYTimes/drone-gdm/releases) (available on 
-[the nytimes dockerhub drone-gdm repo](https://hub.docker.com/r/nytimes/drone-gdm/tags/)) be chosen, rather than `latest`.
-
 ### Features
  * Set the desired `state` (absent, present, or latest) and the plugin determines whether to create, update, or delete.
  * Support for [GDM Beta Composite Types](https://cloud.google.com/deployment-manager/docs/configuration/templates/create-composite-types)
