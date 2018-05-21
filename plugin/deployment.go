@@ -23,7 +23,6 @@ package plugin
 import (
 	"fmt"
 	"strings"
-	"encoding/json"
 )
 
 type GdmDeploymentCmd struct{}
@@ -102,11 +101,11 @@ func (command *GdmDeploymentCmd) Options(context *GdmPluginContext, spec *GdmCon
 			i := 0
 			var propPairs []string
 			for k, v := range spec.Properties {
-				yVal, err := json.Marshal(v)
+				propVal, err := Y2JMarshal(v)
 				if err != nil {
 					return options, err
 				}
-				propPairs = append(propPairs, fmt.Sprintf("%s:%s", k, yVal))
+				propPairs = append(propPairs, fmt.Sprintf("%s:%s", k, propVal))
 				i++
 			}
 

@@ -24,6 +24,7 @@ import (
 	"bytes"
 	"fmt"
 	"gopkg.in/yaml.v2"
+	"os"
 	"strings"
 	"text/template"
 )
@@ -139,6 +140,15 @@ func (context *GdmPluginContext) loadConfigurations() error {
 func (context *GdmPluginContext) Parse() error {
 	err := ParsePluginParams(context)
 	if err != nil {
+		fmt.Printf("\n\x1b[01;31mERROR: Failed to parse plugin parameters.\x1b[00m\n")
+		fmt.Println("Environment Variables Defined for this Build:")
+
+		for _, e := range os.Environ() {
+			comps := strings.Split(e, "=")
+			if len(comps) > 0 {
+				fmt.Printf("\t\t\x1b[01;33m%s\x1b[00m\n", comps[0])
+			}
+		}
 		return err
 	}
 

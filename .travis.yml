@@ -13,28 +13,6 @@ env:
 branches:
   only:
   - master
-  - "/^\\d+\\.\\d+\\.\\d+/"
-script:
-- go vet
-- go test github.com/nytimes/drone-gdm/plugin
-- go build -ldflags "-s -w -X main.lbl=$TRAVIS_BRANCH -X main.build=$TRAVIS_BUILD_NUMBER
-  -X main.rev=$TRAVIS_COMMIT" -a -tags netgo
-after_success:
-- if [ -n "$TRAVIS_TAG" ] && [ "$TRAVIS_PULL_REQUEST" == "false" ]; then
-    lastChar="${TRAVIS_TAG:((${#TRAVIS_TAG}-1)):1}"
-    if [ "${lastChar}" == "a" ]; then
-      latestTag="alpha"
-    elif [ "${lastChar}" == "b" ]; then
-      latestTag="beta"
-    else
-      latestTag="latest"
-    fi
-    docker build -t "nytimes/drone-gdm:${latestTag}" -t "nytimes/drone-gdm:$TRAVIS_TAG" . ;
-    docker login -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD" ;
-    docker push "nytimes/drone-gdm:$TRAVIS_TAG";
-    docker push "nytimes/drone-gdm:${latestTag}";
-  elif [ "$TRAVIS_BRANCH" == "master" -a "$TRAVIS_PULL_REQUEST" == "false" ]; then
-    docker build -t "nytimes/drone-gdm:develop" . ;
-    docker login -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD" ;
-    docker push "nytimes/drone-gdm:develop";
-  fi
+  - /^\d+\.\d+\.\d+[ab]*/
+script: ./travis/script.sh
+after_success: ./travis/after-success.sh
