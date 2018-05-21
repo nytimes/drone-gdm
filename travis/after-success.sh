@@ -20,7 +20,7 @@ if [ -n "$TRAVIS_TAG" ]; then
   docker push "nytimes/drone-gdm:$TRAVIS_TAG"
   docker push "nytimes/drone-gdm:${img_lbl}"
 
-elif [ "$TRAVIS_BRANCH" == "master"]; then
+elif [ "$TRAVIS_BRANCH" == "master" ]; then
   docker build -t "nytimes/drone-gdm:develop" .
   docker login -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD"
   docker push "nytimes/drone-gdm:develop"
