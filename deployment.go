@@ -96,15 +96,13 @@ func (command *GdmDeploymentCmd) Action(spec *GdmConfigurationSpec, exists bool)
 func (command *GdmDeploymentCmd) Options(context *GdmPluginContext, spec *GdmConfigurationSpec, action string) ([]string, error) {
 	var err error
 	var options []string
-	var properties string
-
-	if action != "delete" {
-		if err != nil {
-			return options, err
-		}
-	}
 
 	fileOption, configPath, err := command.getFileOptions(context, spec, action)
+	if err != nil {
+		return options, err
+	}
+
+	properties, err := command.getProperties(spec, action)
 	if err != nil {
 		return options, err
 	}
@@ -115,7 +113,7 @@ func (command *GdmDeploymentCmd) Options(context *GdmPluginContext, spec *GdmCon
 		addOptIfPresent(&options, "--description", spec.Description)
 		labels := mapAsOptions(spec.Labels, "=", ",")
 		addOptIfPresent(&options, "--labels", labels)
-		addOptIfPresent(&options, "--properties", getProperties())
+		addOptIfPresent(&options, "--properties", properties)
 		if spec.AutoRollback {
 			options = append(options, "--automatic-rollback-on-error")
 		}
@@ -123,7 +121,7 @@ func (command *GdmDeploymentCmd) Options(context *GdmPluginContext, spec *GdmCon
 	case "update":
 		addOptIfPresent(&options, fileOption, configPath)
 		addOptIfPresent(&options, "--description", spec.Description)
-		addOptIfPresent(&options, "--properties", getProperties())
+		addOptIfPresent(&options, "--properties", properties)
 		addOptIfPresent(&options, "--create-policy", spec.CreatePolicy)
 		addOptIfPresent(&options, "--delete-policy", spec.DeletePolicy)
 		labels := mapAsOptions(spec.Labels, "=", ",")
@@ -237,6 +235,10 @@ func (command *GdmDeploymentCmd) getConfigFile(context *GdmPluginContext, spec *
 
 func (command *GdmDeploymentCmd) getProperties(spec *GdmConfigurationSpec, action string) (string, error) {
 	var properties string
+	if action == "delete" {
+		return properties, nil
+	}
+
 	noProp := len(spec.Properties)
 	if spec.PassAction {
 		noProp += 1
