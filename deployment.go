@@ -18,7 +18,7 @@
 //
 //------------------------------------------------------------------------------
 
-package plugin
+package main
 
 import (
 	"bytes"
@@ -200,7 +200,7 @@ func (command *GdmDeploymentCmd) getConfigFile(context *GdmPluginContext, spec *
 
 	t, err := t.ParseFiles(configPath)
 	if err != nil {
-		return configPath, fmt.Errorf("Failed to parse configuration yaml", err)
+		return configPath, fmt.Errorf("Failed to parse configuration yaml: %s", err)
 	}
 
 	var buff bytes.Buffer

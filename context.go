@@ -18,7 +18,7 @@
 //
 //------------------------------------------------------------------------------
 
-package plugin
+package main
 
 import (
 	"bytes"
@@ -67,7 +67,7 @@ type GdmPluginContext struct {
 func NewGdmPluginContext() (*GdmPluginContext, error) {
 	tmpDir, err := ioutil.TempDir("", "drone-gdm")
 	if err != nil {
-		return nil, fmt.Errorf("Unable to create gdmPluginContext: ", err)
+		return nil, fmt.Errorf("Unable to create gdmPluginContext: %s", err)
 	}
 
 	return &GdmPluginContext{

@@ -1,4 +1,4 @@
-package plugin
+package main
 
 import (
 	"github.com/stretchr/testify/assert"
@@ -7,7 +7,7 @@ import (
 )
 
 func TestBasicRun(t *testing.T) {
-	context := NewGdmPluginContext()
+	context, _ := NewGdmPluginContext()
 	context.GcloudPath = "/bin/echo"
 
 	result := RunGcloud(context, "Open", "the", "pod", "bay", "doors,", "Hal")
@@ -19,7 +19,7 @@ func TestBasicRun(t *testing.T) {
 }
 
 func TestMissingCmd(t *testing.T) {
-	context := NewGdmPluginContext()
+	context, _ := NewGdmPluginContext()
 	context.GcloudPath = "/bin/plimbst"
 
 	result := RunGcloud(context, "Open", "the", "pod", "bay", "doors,", "Hal")

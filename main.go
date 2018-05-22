@@ -23,11 +23,10 @@ package main
 import (
 	"fmt"
 	drone "github.com/drone/drone-plugin-go/plugin"
-	"github.com/nytimes/drone-gdm/plugin"
 	"os"
 )
 
-var context *plugin.GdmPluginContext
+var context *GdmPluginContext
 var lbl string = "[unknown]"
 var rev string = "[unknown]"
 
@@ -36,7 +35,7 @@ func main() {
 	fmt.Printf("Drone GDM Plugin %s - built from %s:\n", lbl, rev)
 
 	var err error
-	context, err = plugin.NewGdmPluginContext()
+	context, err = NewGdmPluginContext()
 	if err != nil {
 		errBail(err)
 	}
@@ -66,7 +65,7 @@ func main() {
 	}
 
 	for _, spec := range context.Configurations {
-		err = plugin.GdmExecute(context, &spec)
+		err = GdmExecute(context, &spec)
 		if err != nil {
 			errBail(err)
 		}
@@ -85,7 +84,7 @@ func doCleanup() {
 	err := context.Cleanup()
 	if err != nil {
 		// No need to panic on error; (likely ephemeral mount disappeared)
-		fmt.Println("drone-gdm: WARNING: cleanup failed with: %s", err)
+		fmt.Printf("drone-gdm: WARNING: cleanup failed with: %s\n", err)
 	}
 }
 

@@ -6,7 +6,7 @@ GDM_LD_FLAGS+="-X main.build=$TRAVIS_BUILD_NUMBER "
 GDM_LD_FLAGS+=" -X main.rev=$TRAVIS_COMMIT"
 
 go vet
-go test github.com/nytimes/drone-gdm/plugin
+go test ./...
 go build -ldflags "${GDM_LDFLAGS}" -a -tags netgo
 
 # EOF
