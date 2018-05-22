@@ -181,7 +181,7 @@ func (command *GdmDeploymentCmd) getFileOptions(context *GdmPluginContext, spec 
 			configOption = "--template"
 		}
 	case "config":
-		configPath, err = command.getConfigFile(context, spec, configPath)
+		configPath, err = command.getConfigFile(context, spec, configPath, action)
 		configOption = "--config"
 	case "template":
 		configOption = "--template"
@@ -189,7 +189,7 @@ func (command *GdmDeploymentCmd) getFileOptions(context *GdmPluginContext, spec 
 	return configOption, configPath, err
 }
 
-func (command *GdmDeploymentCmd) getConfigFile(context *GdmPluginContext, spec *GdmConfigurationSpec, configPath string) (string, error) {
+func (command *GdmDeploymentCmd) getConfigFile(context *GdmPluginContext, spec *GdmConfigurationSpec, configPath string, action string) (string, error) {
 	t := template.New(path.Base(configPath))
 	t.Funcs(template.FuncMap{
 		"yaml": func(i interface{}) (string, error) {
@@ -203,14 +203,23 @@ func (command *GdmDeploymentCmd) getConfigFile(context *GdmPluginContext, spec *
 		return configPath, fmt.Errorf("Failed to parse configuration yaml: %s", err)
 	}
 
+	gdmVars := make(map[string]interface{})
+	gdmVars["name"] = spec.Name
+	gdmVars["status"] = spec.Status
+	if spec.PassAction {
+		gdmVars["action"] = action
+	}
+
+	tmplVars := make(map[string]interface{})
+	tmplVars["drone"] = DroneVars()
+	tmplVars["plugin"] = PluginVars()
+	tmplVars["context"] = context.Vars
+	tmplVars["config"] = spec.Vars
+	tmplVars["properties"] = spec.Properties
+	tmplVars["gdm"] = gdmVars
+
 	var buff bytes.Buffer
-	configVars := make(map[string]interface{})
-	configVars["drone"] = DroneVars()
-	configVars["plugin"] = PluginVars()
-	configVars["context"] = context.Vars
-	configVars["config"] = spec.Vars
-	configVars["properties"] = spec.Properties
-	err = t.Execute(&buff, configVars)
+	err = t.Execute(&buff, tmplVars)
 	if err != nil {
 		return configPath, err
 	}
