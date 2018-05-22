@@ -30,6 +30,8 @@ type GdmConfigurationSpec struct {
 	State        string
 	Name         string
 	Path         string
+	Config       string
+	Template     string
 	Description  string
 	Labels       map[string]string
 	Properties   map[string]interface{}
@@ -65,6 +67,7 @@ func (spec *GdmConfigurationSpec) Validate() error {
 		return fmt.Errorf("\"name\" is a required parameter")
 	}
 
+	// input file
 	// path --> --config OR --template ; optional for delete-only
 	// --description: (optional)
 	// --labels: (optional)

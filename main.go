@@ -22,40 +22,24 @@ package main
 
 import (
 	"fmt"
-	"github.com/nytimes/drone-gdm/plugin"
 	drone "github.com/drone/drone-plugin-go/plugin"
+	"github.com/nytimes/drone-gdm/plugin"
 	"os"
-	"io/ioutil"
 )
 
-//------------------------------------
-// Globals:
-//------------------------------------
-const gdmTokenPath string = "/tmp/gcloud.json"
-
+var context *plugin.GdmPluginContext
 var lbl string = "[unknown]"
 var rev string = "[unknown]"
 
-const debug bool = true
-
-//------------------------------------
-// Main:
-//------------------------------------
-func errBail(err error) {
-	fmt.Printf("ERROR: %s\n", err)
-	cleanupToken()
-	os.Exit(1)
-}
-
 // drone-gdm plugin entry point.
-// Actions performed:
-// - Parses plugin parameters from environment
-// - Validates parsed plugin parameters
-// - Executes google deployment manager, via gcloud
 func main() {
 	fmt.Printf("Drone GDM Plugin %s - built from %s:\n", lbl, rev)
 
-	context := plugin.NewGdmPluginContext()
+	var err error
+	context, err = plugin.NewGdmPluginContext()
+	if err != nil {
+		errBail(err)
+	}
 
 	// https://godoc.org/github.com/drone/drone-plugin-go/plugin
 	if len(os.Args) > 1 {
@@ -66,7 +50,7 @@ func main() {
 		context.Dir = workspace.Path
 	}
 
-	err := context.Parse()
+	err = context.Parse()
 	if err != nil {
 		errBail(err)
 	}
@@ -76,40 +60,32 @@ func main() {
 		errBail(err)
 	}
 
-	err = performTokenAuthentication(context)
+	err = context.Authenticate()
 	if err != nil {
 		errBail(err)
 	}
 
-	for _,spec := range context.Configurations {
-		err = plugin.GdmExecute(context, &spec, gdmTokenPath)
+	for _, spec := range context.Configurations {
+		err = plugin.GdmExecute(context, &spec)
 		if err != nil {
 			errBail(err)
 		}
 	}
 
-	cleanupToken()
 	os.Exit(0)
 }
 
-func performTokenAuthentication(context *plugin.GdmPluginContext) error {
-	// Write credentials to tmp file to be picked up by the 'gcloud' command.
-	// This is inside the ephemeral plugin container, not on the host:
-	err := ioutil.WriteFile(gdmTokenPath, []byte(context.Token), 0600)
-	if err != nil {
-		return fmt.Errorf("error writing token file: %s\n", err)
-	}
-
-	// Ensure the token is cleaned up, no matter exit status:
-	err = plugin.ActivateServiceAccount(context, gdmTokenPath)
-	return err
+func errBail(err error) {
+	fmt.Printf("\x1b[00;31mERROR: %s\n\x1b[00n", err)
+	doCleanup()
+	os.Exit(1)
 }
 
-func cleanupToken() {
-	err := os.Remove(gdmTokenPath)
+func doCleanup() {
+	err := context.Cleanup()
 	if err != nil {
-		// No need to panic on error, due to likely ephemeral mount
-		fmt.Printf("drone-gdm: WARNING: error removing token file: %s\n", err)
+		// No need to panic on error; (likely ephemeral mount disappeared)
+		fmt.Println("drone-gdm: WARNING: cleanup failed with: %s", err)
 	}
 }
 

@@ -39,7 +39,7 @@ type GdmCommand interface {
 //  - Activate service account using temp file
 //  - Check the present state of the deployment
 //  - Execute a gdm command to transform present --> desired state
-func GdmExecute(context *GdmPluginContext, spec *GdmConfigurationSpec, gdmTokenPath string) error {
+func GdmExecute(context *GdmPluginContext, spec *GdmConfigurationSpec) error {
 	command := getGdmCommand(spec)
 	if command == nil {
 		return fmt.Errorf("\"%s\" is not a supported command", spec.Group)
@@ -65,22 +65,6 @@ func GdmExecute(context *GdmPluginContext, spec *GdmConfigurationSpec, gdmTokenP
 //------------------------------------
 // Utility:
 //------------------------------------
-func ActivateServiceAccount(context *GdmPluginContext, gdmTokenPath string) error {
-	fmt.Println("drone-gdm: Authenticating")
-	args := []string{
-		"auth",
-		"activate-service-account",
-		"--key-file",
-		gdmTokenPath,
-	}
-
-	result := RunGcloud(context, args...)
-	if result.Error != nil {
-		return fmt.Errorf("error activating service account: %s\n", result.Stderr.String())
-	}
-	return nil
-}
-
 func getGdmCommand(spec *GdmConfigurationSpec) GdmCommand {
 	switch spec.Group {
 	case "deployment":
@@ -158,11 +142,10 @@ func mapAsOptions(optMap map[string]string, op string, sep string) string {
 	return optArg
 }
 
-func addOptIfPresent(options []string, val string, optName string) []string {
+func addOptIfPresent(options *[]string, optName string, val string) {
 	if val != "" {
-		options = append(options, fmt.Sprintf("%s=%s", optName, val))
+		*options = append(*options, fmt.Sprintf("%s=%s", optName, val))
 	}
-	return options
 }
 
 func getAdjustedPath(fileArg string, cwd string) string {

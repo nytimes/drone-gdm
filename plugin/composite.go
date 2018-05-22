@@ -85,19 +85,23 @@ func (command *GdmCompositeCmd) Options(context *GdmPluginContext, spec *GdmConf
 	var options []string
 
 	templatePath := getAdjustedPath(spec.Path, context.Dir)
+	if action != "delete" && (spec.Path == "") && (spec.Template == "") {
+		return options, fmt.Errorf("At least one of \"path\", \"config\", or \"template\" is required for \"%s\"", spec.Group)
+	}
+
 	switch action {
 	case "create":
-		options = addOptIfPresent(options, templatePath, "--template")
-		options = addOptIfPresent(options, spec.Description, "--description")
+		addOptIfPresent(&options, "--template", templatePath)
+		addOptIfPresent(&options, "--description", spec.Description)
 		labels := mapAsOptions(spec.Labels, "=", ",")
-		options = addOptIfPresent(options, labels, "--labels")
-		options = addOptIfPresent(options, spec.Status, "--status")
+		addOptIfPresent(&options, "--labels", labels)
+		addOptIfPresent(&options, "--status", spec.Status)
 	case "update":
-		options = addOptIfPresent(options, templatePath, "--template")
-		options = addOptIfPresent(options, spec.Description, "--description")
+		addOptIfPresent(&options, "--template", templatePath)
+		addOptIfPresent(&options, "--description", spec.Description)
 		labels := mapAsOptions(spec.Labels, "=", ",")
-		options = addOptIfPresent(options, labels, "--update-labels")
-		options = addOptIfPresent(options, spec.Status, "--status")
+		addOptIfPresent(&options, "--update-labels", labels)
+		addOptIfPresent(&options, "--status", spec.Status)
 	}
 	return options, nil
 }

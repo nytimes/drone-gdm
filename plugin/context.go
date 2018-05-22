@@ -24,6 +24,7 @@ import (
 	"bytes"
 	"fmt"
 	"gopkg.in/yaml.v2"
+	"io/ioutil"
 	"os"
 	"strings"
 	"text/template"
@@ -36,20 +37,14 @@ import (
 // (For information on the "drone" struct tags, see parse.go)
 type GdmPluginContext struct {
 	// drone:
-	Dir         string `drone:"env=DRONE_DIR"`
-	Repo        string `drone:"env=DRONE_REPO"`
-	Branch      string `drone:"env=DRONE_BRANCH"`
-	Commit      string `drone:"env=DRONE_COMMIT"`
-	BuildNumber string `drone:"env=DRONE_BUILD_NUMBER"`
-	PullRequest string `drone:"env=DRONE_PULL_REQUEST"`
-	JobNumber   string `drone:"env=DRONE_JOB_NUMBER"`
-	Tag         string `drone:"env=DRONE_TAG"`
+	Dir string `drone:"env=DRONE_DIR"`
 
 	// drone-gdm:
-	GcloudPath string            `drone:"env=PLUGIN_GCLOUDPATH"`
-	Verbose    bool              `drone:"env=PLUGIN_VERBOSE"`
-	DryRun     bool              `drone:"env=PLUGIN_DRYRUN"`
-	Vars       map[string]string `drone:"env=PLUGIN_VARS"`
+	Debug      bool                   `drone:"env=PLUGIN_DEBUG"`
+	GcloudPath string                 `drone:"env=PLUGIN_GCLOUDPATH"`
+	Verbose    bool                   `drone:"env=PLUGIN_VERBOSE"`
+	DryRun     bool                   `drone:"env=PLUGIN_DRYRUN"`
+	Vars       map[string]interface{} `drone:"env=PLUGIN_VARS"`
 
 	// gcloud:
 	Token   string `drone:"env=TOKEN"`
@@ -63,18 +58,62 @@ type GdmPluginContext struct {
 
 	// Internal use only:
 	parseOkay bool
+	tmpDir    string
 
 	// TODO: other gcloud global parameters
 }
 
 // Return a pointer to a new GdmPluginContext
-func NewGdmPluginContext() *GdmPluginContext {
-	return &GdmPluginContext{
-		Preview:    false,
-		GcloudPath: "/google-cloud-sdk/bin/gcloud",
-		Async:      false,
-		parseOkay:  false,
+func NewGdmPluginContext() (*GdmPluginContext, error) {
+	tmpDir, err := ioutil.TempDir("", "drone-gdm")
+	if err != nil {
+		return nil, fmt.Errorf("Unable to create gdmPluginContext: ", err)
 	}
+
+	return &GdmPluginContext{
+		// drone-gdm:
+		Debug:      false,
+		GcloudPath: "/google-cloud-sdk/bin/gcloud",
+		Verbose:    false,
+		DryRun:     false,
+
+		// deployment-manager:
+		Preview: false,
+		Async:   false,
+
+		// internal:
+		parseOkay: false,
+		tmpDir:    tmpDir,
+	}, nil
+}
+
+func (context *GdmPluginContext) TempDir() string {
+	return context.tmpDir
+}
+
+// Parse GdmPluginContext using ParsePluginParams.
+// Set parseOkay flag accordingly.
+func (context *GdmPluginContext) Parse() error {
+	err := ParsePluginParams(context)
+
+	if err != nil {
+		// Ensure the debug flag is set appropriatley, regardless of parse
+		// status so that main can leverage this for error reporting:
+		pluginVars := PluginVars()
+		dbg, ok := pluginVars["debug"]
+		if ok && dbg == "true" {
+			context.Debug = true
+		}
+		return err
+	}
+
+	err = context.loadConfigurations()
+	if err != nil {
+		return err
+	}
+
+	context.parseOkay = (err == nil)
+	return err
 }
 
 // Validate GdmPluginContext, after parsing.
@@ -107,6 +146,58 @@ func (context *GdmPluginContext) Validate() error {
 	return nil
 }
 
+func (context *GdmPluginContext) Authenticate() error {
+	tokenFile, err := ioutil.TempFile(context.tmpDir, "gdm-token.json")
+	if err != nil {
+		return fmt.Errorf("error creating token file: %s", err)
+	}
+
+	// Write credentials to tmp file to be picked up by the 'gcloud' command.
+	// This is inside the ephemeral plugin container, not on the host:
+	_, err = tokenFile.Write([]byte(context.Token))
+	if err != nil {
+		return fmt.Errorf("error writing token file: %s\n", err)
+	}
+
+	return context.ActivateServiceAccount(tokenFile.Name())
+}
+
+func (context *GdmPluginContext) ActivateServiceAccount(gdmTokenPath string) error {
+	fmt.Println("drone-gdm: Authenticating")
+	args := []string{
+		"auth",
+		"activate-service-account",
+		"--key-file",
+		gdmTokenPath,
+	}
+
+	result := RunGcloud(context, args...)
+	if result.Error != nil {
+		return fmt.Errorf("error activating service account: %s\n", result.Stderr.String())
+	}
+	return nil
+}
+
+func (context *GdmPluginContext) Cleanup() error {
+	if context == nil {
+		return nil
+	}
+
+	if context.Debug {
+		fmt.Println("\x1b[01;33mEnvironment Variables Defined for this Build:\x1b[00m")
+
+		for k, v := range PluginVars() {
+			fmt.Printf("\t\t\x1b[00;33m%s: \x1b[00;34m%s\x1b[00m\n", k, v)
+		}
+	}
+
+	var err error
+	if (context.tmpDir != "") && (!context.Debug) {
+		err = os.RemoveAll(context.tmpDir)
+	}
+	return err
+}
+
 func (context *GdmPluginContext) loadConfigurations() error {
 	if context.ConfigFile == "" {
 		return nil
@@ -133,32 +224,6 @@ func (context *GdmPluginContext) loadConfigurations() error {
 		context.Configurations = append(context.Configurations, configurations...)
 	}
 	return nil
-}
-
-// Parse GdmPluginContext using ParsePluginParams.
-// Set parseOkay flag accordingly.
-func (context *GdmPluginContext) Parse() error {
-	err := ParsePluginParams(context)
-	if err != nil {
-		fmt.Printf("\n\x1b[01;31mERROR: Failed to parse plugin parameters.\x1b[00m\n")
-		fmt.Println("Environment Variables Defined for this Build:")
-
-		for _, e := range os.Environ() {
-			comps := strings.Split(e, "=")
-			if len(comps) > 0 {
-				fmt.Printf("\t\t\x1b[01;33m%s\x1b[00m\n", comps[0])
-			}
-		}
-		return err
-	}
-
-	err = context.loadConfigurations()
-	if err != nil {
-		return err
-	}
-
-	context.parseOkay = (err == nil)
-	return err
 }
 
 // EOF

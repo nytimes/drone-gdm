@@ -1,0 +1,17 @@
+# Last Updated:
+#   repo:   {{.drone.repo}}
+#   build:  {{.drone.build_number}}
+#   branch: {{.drone.branch}}
+#   commit: {{.drone.commit}}
+resources:
+- name: my-bucket
+  type: gcp-types/storage-v1:buckets
+  properties:
+    predefinedAcl: projectPrivate
+    storageClass: MULTI_REGIONAL
+    versioning:
+      enabled: false
+    {{- if .properties.accessControl }}
+    accessControl:
+    {{- yaml .properties.accessControl | nindent 6 -}}
+    {{ end }}

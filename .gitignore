@@ -1,4 +1,5 @@
 /.drone.sec.yml
 /drone-gdm
 /bin/test-*.sh
+*-test.bash
 

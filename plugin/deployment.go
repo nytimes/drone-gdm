@@ -21,8 +21,14 @@
 package plugin
 
 import (
+	"bytes"
 	"fmt"
+	"gopkg.in/Masterminds/sprig.v2"
+	"gopkg.in/yaml.v2"
+	"io/ioutil"
+	"path"
 	"strings"
+	"text/template"
 )
 
 type GdmDeploymentCmd struct{}
@@ -88,68 +94,159 @@ func (command *GdmDeploymentCmd) Action(spec *GdmConfigurationSpec, exists bool)
 }
 
 func (command *GdmDeploymentCmd) Options(context *GdmPluginContext, spec *GdmConfigurationSpec, action string) ([]string, error) {
+	var err error
 	var options []string
 	var properties string
 
 	if action != "delete" {
-		noProp := len(spec.Properties)
-		if spec.PassAction {
-			noProp += 1
-		}
-
-		if noProp > 0 {
-			i := 0
-			var propPairs []string
-			for k, v := range spec.Properties {
-				propVal, err := Y2JMarshal(v)
-				if err != nil {
-					return options, err
-				}
-				propPairs = append(propPairs, fmt.Sprintf("%s:%s", k, propVal))
-				i++
-			}
-
-			if spec.PassAction {
-				propPairs = append(propPairs, fmt.Sprintf("action:%s", action))
-			}
-
-			properties = strings.Join(propPairs, ",")
+		if err != nil {
+			return options, err
 		}
 	}
 
-	configPath := getAdjustedPath(spec.Path, context.Dir)
-
-	var fileOption string
-	if strings.HasSuffix(configPath, ".yml") || strings.HasSuffix(configPath, ".yaml") {
-		fileOption = "--config"
-	} else {
-		fileOption = "--template"
+	fileOption, configPath, err := command.getFileOptions(context, spec, action)
+	if err != nil {
+		return options, err
 	}
 
 	switch action {
 	case "create":
-		options = addOptIfPresent(options, configPath, fileOption)
-		options = addOptIfPresent(options, spec.Description, "--description")
+		addOptIfPresent(&options, fileOption, configPath)
+		addOptIfPresent(&options, "--description", spec.Description)
 		labels := mapAsOptions(spec.Labels, "=", ",")
-		options = addOptIfPresent(options, labels, "--labels")
-		options = addOptIfPresent(options, properties, "--properties")
+		addOptIfPresent(&options, "--labels", labels)
+		addOptIfPresent(&options, "--properties", properties)
 		if spec.AutoRollback {
 			options = append(options, "--automatic-rollback-on-error")
 		}
 
 	case "update":
-		options = addOptIfPresent(options, configPath, fileOption)
-		options = addOptIfPresent(options, spec.Description, "--description")
-		options = addOptIfPresent(options, properties, "--properties")
-		options = addOptIfPresent(options, spec.CreatePolicy, "--create-policy")
-		options = addOptIfPresent(options, spec.DeletePolicy, "--delete-policy")
+		addOptIfPresent(&options, fileOption, configPath)
+		addOptIfPresent(&options, "--description", spec.Description)
+		addOptIfPresent(&options, "--properties", properties)
+		addOptIfPresent(&options, "--create-policy", spec.CreatePolicy)
+		addOptIfPresent(&options, "--delete-policy", spec.DeletePolicy)
 		labels := mapAsOptions(spec.Labels, "=", ",")
-		options = addOptIfPresent(options, labels, "--update-labels")
+		addOptIfPresent(&options, "--update-labels", labels)
 
 	case "delete":
-		options = addOptIfPresent(options, spec.DeletePolicy, "--delete-policy")
+		addOptIfPresent(&options, "--delete-policy", spec.DeletePolicy)
 	}
 	return options, nil
+}
+
+func (command *GdmDeploymentCmd) getFileOptions(context *GdmPluginContext, spec *GdmConfigurationSpec, action string) (string, string, error) {
+	if action == "delete" {
+		return "", "", nil
+	}
+
+	pathSpecs := []struct {
+		param string
+		val   string
+	}{
+		{"path", spec.Path},
+		{"config", spec.Config},
+		{"template", spec.Template},
+	}
+
+	var configParam string
+	var configPath string
+	for _, pathSpec := range pathSpecs {
+		if pathSpec.val != "" {
+			if configPath == "" {
+				configParam = pathSpec.param
+				configPath = getAdjustedPath(pathSpec.val, context.Dir)
+			} else {
+				return "", "", fmt.Errorf(
+					"Exactly one of \"path\", \"config\", or \"template\" is required for \"%s\". Got: \"%s: %s\" but already had \"%s: %s\"",
+					spec.Group, pathSpec.param, pathSpec.val, configParam, configPath)
+			}
+		}
+	}
+
+	if configPath == "" {
+		return "", "", fmt.Errorf(
+			"Exactly one of \"path\", \"config\", or \"template\" is required for \"%s\"",
+			spec.Group)
+	}
+
+	var err error
+	var configOption string
+	switch configParam {
+	// Compatibility: for "path" parameter, determine option by extension
+	case "path":
+		if strings.HasSuffix(configPath, ".yml") || strings.HasSuffix(configPath, ".yaml") {
+			configOption = "--config"
+		} else {
+			configOption = "--template"
+		}
+	case "config":
+		configPath, err = command.getConfigFile(context, spec, configPath)
+		configOption = "--config"
+	case "template":
+		configOption = "--template"
+	}
+	return configOption, configPath, err
+}
+
+func (command *GdmDeploymentCmd) getConfigFile(context *GdmPluginContext, spec *GdmConfigurationSpec, configPath string) (string, error) {
+	t := template.New(path.Base(configPath))
+	t.Funcs(template.FuncMap{
+		"yaml": func(i interface{}) (string, error) {
+			data, err := yaml.Marshal(i)
+			return string(data), err
+		},
+	}).Funcs(sprig.GenericFuncMap())
+
+	t, err := t.ParseFiles(configPath)
+	if err != nil {
+		return configPath, fmt.Errorf("Failed to parse configuration yaml", err)
+	}
+
+	var buff bytes.Buffer
+	configVars := make(map[string]interface{})
+	configVars["drone"] = DroneVars()
+	configVars["vars"] = context.Vars
+	configVars["properties"] = spec.Properties
+	err = t.Execute(&buff, configVars)
+	if err != nil {
+		return configPath, err
+	}
+
+	tmpFile, err := ioutil.TempFile(context.TempDir(), "gdm-config")
+	if err == nil {
+		_, err = tmpFile.Write(buff.Bytes())
+		if err == nil {
+			tmpFile.Close()
+		}
+	}
+	return tmpFile.Name(), err
+}
+
+func (command *GdmDeploymentCmd) getProperties(spec *GdmConfigurationSpec, action string) (string, error) {
+	var properties string
+	noProp := len(spec.Properties)
+	if spec.PassAction {
+		noProp += 1
+	}
+
+	if noProp > 0 {
+		var propPairs []string
+		for k, v := range spec.Properties {
+			propVal, err := Y2JMarshal(v)
+			if err != nil {
+				return properties, err
+			}
+			propPairs = append(propPairs, fmt.Sprintf("%s:%s", k, propVal))
+		}
+
+		if spec.PassAction {
+			propPairs = append(propPairs, fmt.Sprintf("action:%s", action))
+		}
+
+		properties = strings.Join(propPairs, ",")
+	}
+	return properties, nil
 }
 
 // EOF

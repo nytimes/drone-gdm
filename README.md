@@ -5,13 +5,25 @@ drone-gdm
 
 A simple drone plugin which wraps [Google Deployment Manager](https://cloud.google.com/deployment-manager/docs/).
 
-### Versions
-Starting with version `1.2.1a`, you can include drone-gdm by:
+### Docker Tags
+
+#### All Versions
 * [specific release number](https://github.com/NYTimes/drone-gdm/releases) (see [dockerhub repo](https://hub.docker.com/r/nytimes/drone-gdm/tags/)).
-* the `latest` tag to get the latest _stable_ version
 * the `develop` tag to get the last thing that _built_
+
+#### 1.x Series
+* the `latest` tag to get the latest *v1.x* _stable_
 * the `beta` tag to get the latest _beta_ release
 * the `alpha` tag to get the latest `alpha` release
+* the `develop` tag to get the last thing that _built_
+<sub>(alpha, beta, and develop tags introduced as of `1.2.1a`)</sub>
+
+Starting with version `2.0.0a` the tag scheme is prefixed with major version, e.g:
+* the `v2-alpha` tag to get the latest 2.x _alpha_ release
+* the `v2-beta` tag to get the latest 2.x _beta_ release
+* the `v2-stable` tag to get the latest 2.x _stable_ release
+<sub>This pattern will continue with subsequent major version releases; enabling you to pin your build to the latest stable version of any given backwards-compatible, major-level release</sub>
+
 
 ### Features
  * Set the desired `state` (absent, present, or latest) and the plugin determines whether to create, update, or delete.
