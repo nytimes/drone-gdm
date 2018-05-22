@@ -208,8 +208,13 @@ func (context *GdmPluginContext) loadConfigurations() error {
 		return err
 	}
 
+	tmplVars := make(map[string]interface{})
+	tmplVars["drone"] = DroneVars()
+	tmplVars["plugin"] = PluginVars()
+	tmplVars["context"] = context.Vars
+
 	var buff bytes.Buffer
-	err = t.Execute(&buff, context.Vars)
+	err = t.Execute(&buff, tmplVars)
 	if err != nil {
 		return err
 	}
