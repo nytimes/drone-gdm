@@ -206,6 +206,7 @@ func (command *GdmDeploymentCmd) getConfigFile(context *GdmPluginContext, spec *
 	gdmVars := make(map[string]interface{})
 	gdmVars["name"] = spec.Name
 	gdmVars["status"] = spec.Status
+	gdmVars["project"] = context.Project
 	if spec.PassAction {
 		gdmVars["action"] = action
 	}
