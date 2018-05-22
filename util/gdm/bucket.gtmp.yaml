@@ -1,0 +1,24 @@
+# Last Updated:
+#   repo:   {{.drone.repo}}
+#   build:  {{.drone.build_number}}
+#   branch: {{.drone.branch}}
+#   commit: {{.drone.commit}}
+resources:
+- name: my-bucket
+  type: gcp-types/storage-v1:buckets
+  properties:
+    predefinedAcl: projectPrivate
+    storageClass: MULTI_REGIONAL
+    versioning:
+      enabled: false
+    acl:
+    - role: OWNER
+      entity: user-my-{{ .context.env }}-user@{{ .context.project }}.iam.gserviceaccount.com
+    {{- if .config.properties.acl }}
+    {{- yaml .config.properties.acl | nindent 6 -}}
+    {{- end }}
+  {{ if .config.accessControl -}}
+  accessControl:
+  {{- yaml .config.accessControl | nindent 4 -}}
+  {{ end }}
+

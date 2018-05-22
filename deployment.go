@@ -206,7 +206,9 @@ func (command *GdmDeploymentCmd) getConfigFile(context *GdmPluginContext, spec *
 	var buff bytes.Buffer
 	configVars := make(map[string]interface{})
 	configVars["drone"] = DroneVars()
-	configVars["vars"] = context.Vars
+	configVars["plugin"] = PluginVars()
+	configVars["context"] = context.Vars
+	configVars["config"] = spec.Vars
 	configVars["properties"] = spec.Properties
 	err = t.Execute(&buff, configVars)
 	if err != nil {

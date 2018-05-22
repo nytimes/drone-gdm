@@ -1,56 +1,38 @@
-- automaticRollbackOnError: true
-  name: my-deployment1
+- name: my-deployment1
+  group: deployment
+  config: gdm/bucket.gtmp.yaml
+  state: latest
+  vars:
+    properties:
+      acl:
+      - role: VIEWER
+        entity: some-user@gmail.com
+      - role: VIEWER
+        entity: another-user@gmail.com
+    accessControl:
+      gcpIamPolicy:
+        bindings:
+        - role: roles/storage.objectAdmin
+          members:
+          - my-acct@gmail.com
+          - another-acct@gmail.com
+        - role: roles/storage.objectViewer
+          members:
+          - some-user@gmail.com
+          - another-user@gmail.com
+
   createPolicy: CREATE_OR_ACQUIRE
   deletePolicy: DELETE
-  group: deployment
+  automaticRollbackOnError: true
   labels:
-    l1: val1
-    l2: val2
+    example: yamlNoJinja
+
+- name: my-deployment2
+  group: deployment
   config: gdm/bucket.yaml
-  properties:
-    accessControl:
-      bindings:
-      - role: roles/storage.objectAdmin
-        members:
-        - my-acct@gmail.com
-        - another-acct@gmail.com
-      - role: roles/storage.objectViewer
-        members:
-        - some-user@gmail.com
-        - another-user@gmail.com
-    p1: val1
-    p2: val2
   state: latest
-#- automaticRollbackOnError: true
-#  createPolicy: CREATE_OR_ACQUIRE
-#  deletePolicy: DELETE
-#  group: deployment
-#  labels:
-#    l1: val1
-#    l2: val2
-#  name: my-deployment2
-#  path: ./my-deployment2.yml
-#  properties:
-#    p1: val1
-#    p2: val2
-#  state: present
-#- group: deployment
-#  name: my-deployment3
-#  path: ./my-deployment3.yml
-#  state: absent
-#- group: composite
-#  labels:
-#    l1: val1
-#    l2: val2
-#  name: my-composite1
-#  path: ./my-composite1.yml
-#  state: present
-#  status: SUPPORTED
-#- group: composite
-#  labels:
-#    l1: val1
-#    l2: val2
-#  name: my-composite2
-#  path: ./my-composite2.yml
-#  state: absent
-#  status: DEPRECATED
+  createPolicy: CREATE_OR_ACQUIRE
+  deletePolicy: DELETE
+  automaticRollbackOnError: true
+  labels:
+    example: yamlAndJinja

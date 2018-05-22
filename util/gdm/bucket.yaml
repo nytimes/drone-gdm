@@ -4,14 +4,13 @@
 #   branch: {{.drone.branch}}
 #   commit: {{.drone.commit}}
 resources:
-- name: my-bucket
-  type: gcp-types/storage-v1:buckets
+- name: my-bucket2
+  type: gdm/bucket.jinja
   properties:
-    predefinedAcl: projectPrivate
-    storageClass: MULTI_REGIONAL
-    versioning:
-      enabled: false
-    {{- if .properties.accessControl }}
-    accessControl:
-    {{- yaml .properties.accessControl | nindent 6 -}}
-    {{ end }}
+    acl:
+    - role: OWNER
+      entity: user-my-{{ .context.env }}-user@{{ .context.project }}.iam.gserviceaccount.com
+    - role: VIEWER
+      entity: my-ro-{{ .context.env }}-user1@gmail.com
+    - role: VIEWER
+      entity: my-ro-{{ .context.env }}-user2@gmail.com

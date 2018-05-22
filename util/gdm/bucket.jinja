@@ -1,0 +1,14 @@
+resources:
+- name: {{ env.deployment }}-storage
+  type: gcp-types/storage-v1:buckets
+  properties:
+    predefinedAcl: projectPrivate
+    storageClass: MULTI_REGIONAL
+    versioning:
+      enabled: false
+    acl:
+    {% for binding in properties.acl %}
+    - role: {{ binding.role }}
+      entity: {{ binding.entity }}
+    {% endfor %}
+

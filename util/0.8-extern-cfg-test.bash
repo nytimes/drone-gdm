@@ -18,7 +18,7 @@ export PLUGIN_ASYNC="false"
 export PLUGIN_DRYRUN="true"
 export PLUGIN_DEBUG="true"
 export PLUGIN_CONFIGFILE="drone/0.8-extern-cfg-test.yml"
-export PLUGIN_VARS='{"name": "flormbo", "acl": {"user": "tom.bombadil@middle.earth"}}'
+export PLUGIN_VARS='{"env": "dev"}'
 
 ${thisdir}/../drone-gdm
 
