@@ -115,7 +115,7 @@ func (command *GdmDeploymentCmd) Options(context *GdmPluginContext, spec *GdmCon
 		addOptIfPresent(&options, "--description", spec.Description)
 		labels := mapAsOptions(spec.Labels, "=", ",")
 		addOptIfPresent(&options, "--labels", labels)
-		addOptIfPresent(&options, "--properties", properties)
+		addOptIfPresent(&options, "--properties", getProperties())
 		if spec.AutoRollback {
 			options = append(options, "--automatic-rollback-on-error")
 		}
@@ -123,7 +123,7 @@ func (command *GdmDeploymentCmd) Options(context *GdmPluginContext, spec *GdmCon
 	case "update":
 		addOptIfPresent(&options, fileOption, configPath)
 		addOptIfPresent(&options, "--description", spec.Description)
-		addOptIfPresent(&options, "--properties", properties)
+		addOptIfPresent(&options, "--properties", getProperties())
 		addOptIfPresent(&options, "--create-policy", spec.CreatePolicy)
 		addOptIfPresent(&options, "--delete-policy", spec.DeletePolicy)
 		labels := mapAsOptions(spec.Labels, "=", ",")
