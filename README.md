@@ -5,6 +5,10 @@ drone-gdm
 
 A simple drone plugin which wraps [Google Deployment Manager](https://cloud.google.com/deployment-manager/docs/).
 
+*NOTE*: The latest stable/supported is [1.1.0b](https://github.com/NYTimes/drone-gdm/tree/1.1.0b). The 2.0 release is still in
+_alpha_, despite being employed in some production CI environments.
+A stable release 2.x is forthcoming, pending additional testing/refinement.
+
 ### Docker Tags
 
 #### All Versions
@@ -53,6 +57,22 @@ The specific `action` selected by drone-gdm can be provided to your template
 as a property, by specifying `passAction: true`. This will invoke your
 configuration or template with `--properties=action:<action from table above>`.
 
+### Variables
+To circumvent data-type limitations imposed by the passing of properties via the
+deployment manager `--properties` option, template and configurations files
+passed to drone-gdm are first parsed as [golang templates](https://golang.org/pkg/text/template/) with the following
+top-level interfaces available for variable interpolation:
+ - `.drone` - Drone environment variables provided by the CI system during plugin invocation
+ - `.plugin` - Plugin parameters passed via environment during plugin invocation
+ - `.context` - Any variables defined in the `vars` section of the plugin invocation
+ - `.config` - Any variables defined in the `vars` section of the configuration definition
+ - `.properties` - Variables defined in the `properties` section of the configuration definition
+ - `.gdm` - A dictionary containing:
+   - `name` - entity name for the configuration/template/composite
+   - `status` - the entity status (e.g. DEPRECATED, EXPERIMENTAL, SUPPORTED)
+   - `project` - the GCP project name
+   - `action` - the gcloud "action" parameter (i.e. `create`, `update`, or `delete`)
+
 ### Example
 ```Yaml
 deploy:
@@ -69,6 +89,9 @@ deploy:
     project: my-gcp-project   # Da--project
     preview: false            # --preview
     async: false              # --async
+    vars:
+    - myCtxVar: ctxVal1
+    - myOtherCtxVar: ctxVal2
 
     configurations:
     - name:  my-deployment
@@ -76,6 +99,9 @@ deploy:
       state: present
       path: ./my-deployment.yaml
       description: A GDM Deployment
+      vars:
+      - myCfgVar: cfgVal1
+      - myOtherCfgVar: cfgVal2
       properties:    # mapped to gcloud '--properties=...'
         myvar: myval # can be referenced in jinja as: {{ properties.myvar }}
       labels:        # mapped to '--labels' or '--update-labels', as appropriate
