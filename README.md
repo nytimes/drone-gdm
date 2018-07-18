@@ -5,10 +5,6 @@ drone-gdm
 
 A simple drone plugin which wraps [Google Deployment Manager](https://cloud.google.com/deployment-manager/docs/).
 
-*NOTE*: The latest stable/supported is [1.1.0b](https://github.com/NYTimes/drone-gdm/tree/1.1.0b). The 2.0 release is still in
-_alpha_, despite being employed in some production CI environments.
-A stable release 2.x is forthcoming, pending additional testing/refinement.
-
 ### Docker Tags
 
 #### All Versions
@@ -73,12 +69,12 @@ top-level interfaces available for variable interpolation:
    - `project` - the GCP project name
    - `action` - the gcloud "action" parameter (i.e. `create`, `update`, or `delete`)
 
-### Example
+### Example with Inline Configurations
 ```Yaml
 deploy:
   gdm:
     # Indicate where to acquire the image:
-    image: nytimes/drone-gdm:1.1.0b
+    image: nytimes/drone-gdm:2.0.0
 
     # Provided JSON auth token (from drone secrets):
     gcloudPath: /bin/gcloud   # path to gcloud executable
@@ -124,12 +120,12 @@ deploy:
 
 ```
 
-### Example with External Configurations (1.2.x alpha only!)
+### Example with Inline and External Configurations
 ```Yaml
 deploy:
   gdm:
     # Indicate where to acquire the image:
-    image: nytimes/drone-gdm:1.2.1a
+    image: nytimes/drone-gdm:2.0.0
 
     # Provided JSON auth token (from drone secrets):
     gcloudPath: /bin/gcloud   # path to gcloud executable
