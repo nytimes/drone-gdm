@@ -15,7 +15,7 @@ if [ -n "$TRAVIS_TAG" ]; then
   fi
 
   docker build \
-      -t "nytimes/drone-gdm:${img_lbl}" \
+      -t "nytimes/drone-gdm:v${major}-${img_lbl}" \
       -t "nytimes/drone-gdm:$TRAVIS_TAG" . ;
   docker login -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD"
   docker push "nytimes/drone-gdm:$TRAVIS_TAG"
