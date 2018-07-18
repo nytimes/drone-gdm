@@ -1,6 +1,11 @@
 Releases
 ========
 
+2.0.0 - 2018/07/18
+------------------
+ - Updated support for external configuration files and more advanced templating
+ - Fixed bug introduced in 1.2.Xa series which _did not pass `deletePolicy` spec_
+
 1.2.1a - 2018/05/09
 -------------------
  - Use google-sdk base image
