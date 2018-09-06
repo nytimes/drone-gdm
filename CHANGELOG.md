@@ -1,6 +1,10 @@
 Releases
 ========
 
+2.0.1b - 2018/09/06
+-------------------
+ - Bump to cloud sdk 215.0.0
+
 2.0.0 - 2018/07/18
 ------------------
  - Updated support for external configuration files and more advanced templating
