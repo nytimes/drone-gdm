@@ -90,7 +90,7 @@ deploy:
     - myOtherCtxVar: ctxVal2
 
     configurations:
-    - name:  my-deployment
+    - name:  my-provider
       group: typeprovider
       state: present
       descriptorURL: https://cloudtasks.googleapis.com/$discovery/rest?version=v2beta3
