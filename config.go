@@ -25,22 +25,24 @@ import (
 )
 
 type GdmConfigurationSpec struct {
-	Vars         map[string]interface{} `json:"vars"`
-	GdmVersion   string                 `json:"version"`
-	Group        string                 `json:"group"`
-	State        string
-	Name         string
-	Path         string
-	Config       string
-	Template     string
-	Description  string
-	Labels       map[string]string
-	Properties   map[string]interface{}
-	AutoRollback bool `json:"automaticRollbackOnError"`
-	CreatePolicy string
-	DeletePolicy string
-	Status       string
-	PassAction   bool `json:"passAction"`
+	Vars          map[string]interface{} `json:"vars"`
+	GdmVersion    string                 `json:"version"`
+	Group         string                 `json:"group"`
+	State         string
+	Name          string
+	Path          string
+	Config        string
+	Template      string
+	Description   string
+	DescriptorURL string
+	APIOptions    string
+	Labels        map[string]string
+	Properties    map[string]interface{}
+	AutoRollback  bool `json:"automaticRollbackOnError"`
+	CreatePolicy  string
+	DeletePolicy  string
+	Status        string
+	PassAction    bool `json:"passAction"`
 }
 
 func (spec *GdmConfigurationSpec) Validate() error {
@@ -52,7 +54,7 @@ func (spec *GdmConfigurationSpec) Validate() error {
 		return fmt.Errorf("configuration error: %v", err)
 	}
 
-	err = IsParamInRange("group", spec.Group, "deployment", "composite")
+	err = IsParamInRange("group", spec.Group, "deployment", "composite", "typeprovider")
 	if err != nil {
 		return fmt.Errorf("configuration error: %v", err)
 	}

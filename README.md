@@ -91,6 +91,11 @@ deploy:
 
     configurations:
     - name:  my-deployment
+      group: typeprovider
+      state: present
+      descriptorURL: https://cloudtasks.googleapis.com/$discovery/rest?version=v2beta3
+      apiOptions: ./api-options-definition.yaml # path to api options YAML
+    - name:  my-deployment
       group: deployment
       state: present
       path: ./my-deployment.yaml

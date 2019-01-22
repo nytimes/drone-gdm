@@ -7,5 +7,6 @@ Code Organization
  * gdm.go: GDM business logic + command interface
  * composite.go: GDM "types" (composite) command implementation
  * deployment.go: GDM "deployments" command implementation
+ * typeprovider.go: GDM "type-providers" command implementation
 
 
