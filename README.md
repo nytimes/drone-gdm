@@ -90,6 +90,11 @@ deploy:
     - myOtherCtxVar: ctxVal2
 
     configurations:
+    - name:  my-provider
+      group: typeprovider
+      state: present
+      descriptorURL: https://cloudtasks.googleapis.com/$discovery/rest?version=v2beta3
+      apiOptions: ./api-options-definition.yaml # path to api options YAML
     - name:  my-deployment
       group: deployment
       state: present

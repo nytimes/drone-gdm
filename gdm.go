@@ -67,6 +67,8 @@ func GdmExecute(context *GdmPluginContext, spec *GdmConfigurationSpec) error {
 //------------------------------------
 func getGdmCommand(spec *GdmConfigurationSpec) GdmCommand {
 	switch spec.Group {
+	case "typeprovider":
+		return NewTypeProviderCmd()
 	case "deployment":
 		return NewGdmDeploymentCmd()
 	case "composite":
@@ -117,9 +119,7 @@ func executeDeploymentAction(context *GdmPluginContext, spec *GdmConfigurationSp
 func getCmdPrelude(command GdmCommand, spec *GdmConfigurationSpec) []string {
 	var cmd []string
 	switch spec.Group {
-	case "deployment":
-		cmd = []string{"deployment-manager", command.Name()}
-	case "composite":
+	case "typeprovider", "deployment","composite":
 		cmd = []string{"deployment-manager", command.Name()}
 	}
 

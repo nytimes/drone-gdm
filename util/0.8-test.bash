@@ -16,6 +16,14 @@ export PLUGIN_DRYRUN="true"
 read -r -d '' PLUGIN_CONFIGURATIONS <<'EOF'
 [
 	{
+		"name": "my-type-provider1",
+		"group": "typeprovider",
+		"state": "present",
+		"apiOptions": "./my-composite1.yml",
+		"version": "beta",
+		"descriptorURL": "https://cloudtasks.googleapis.com/$discovery/rest?version=v2beta3"
+	},
+	{
 		"name": "my-deployment1",
 		"group": "deployment",
 		"state": "latest",
