@@ -26,7 +26,7 @@ import (
 
 type GdmConfigurationSpec struct {
 	Vars          map[string]interface{} `json:"vars"`
-	GdmVersion    string                 `json:"version"`
+	GdmVersion    string                 `json:"version" yaml:"version"`
 	Group         string                 `json:"group"`
 	State         string
 	Name          string
