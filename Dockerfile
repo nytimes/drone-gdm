@@ -1,4 +1,4 @@
-FROM google/cloud-sdk:215.0.0-alpine
+FROM google/cloud-sdk:255.0.0-alpine
 RUN /google-cloud-sdk/bin/gcloud components install beta --quiet
 
 # Clean up
