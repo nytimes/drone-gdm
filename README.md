@@ -13,7 +13,7 @@ see [tags](#tags).
 
 #### Simple Example
 
-:information_source: see [examples](./doc/EXAMPLES.md) for more detiled examples.
+:information_source: see [examples](./doc/EXAMPLES.md) for more detailed examples.
 ```yaml
 deploy:
   gdm:
