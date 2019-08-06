@@ -20,7 +20,7 @@ func TestBasicRun(t *testing.T) {
 
 func TestMissingCmd(t *testing.T) {
 	context, _ := NewGdmPluginContext()
-	context.GcloudPath = "/bin/plimbst"
+	context.GcloudPath = "/bin/this-command-does-not-exist"
 
 	result := RunGcloud(context, "Open", "the", "pod", "bay", "doors,", "Hal")
 

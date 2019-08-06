@@ -1,4 +1,6 @@
 #!/bin/bash
+ORG_NAME="${ORG_NAME:-"nytimes"}"
+
 if [ "${TRAVIS_PULL_REQUEST}" != "false" ]; then
     exit 0
 fi
@@ -15,16 +17,16 @@ if [ -n "$TRAVIS_TAG" ]; then
   fi
 
   docker build \
-      -t "nytimes/drone-gdm:v${major}-${img_lbl}" \
-      -t "nytimes/drone-gdm:$TRAVIS_TAG" . ;
+      -t "${ORG_NAME}/drone-gdm:v${major}-${img_lbl}" \
+      -t "${ORG_NAME}/drone-gdm:$TRAVIS_TAG" . ;
   docker login -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD"
-  docker push "nytimes/drone-gdm:$TRAVIS_TAG"
-  docker push "nytimes/drone-gdm:v${major}-${img_lbl}"
+  docker push "${ORG_NAME}/drone-gdm:$TRAVIS_TAG"
+  docker push "${ORG_NAME}/drone-gdm:v${major}-${img_lbl}"
 
 elif [ "$TRAVIS_BRANCH" == "master" ]; then
-  docker build -t "nytimes/drone-gdm:develop" .
+  docker build -t "${ORG_NAME}/drone-gdm:develop" .
   docker login -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD"
-  docker push "nytimes/drone-gdm:develop"
+  docker push "${ORG_NAME}/drone-gdm:develop"
 fi
 
 # EOF

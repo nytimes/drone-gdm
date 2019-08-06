@@ -3,41 +3,40 @@ drone-gdm
 
 [![Build Status](https://travis-ci.org/NYTimes/drone-gdm.svg?branch=master)](https://travis-ci.org/NYTimes/drone-gdm)
 
-A simple drone plugin which wraps [Google Deployment Manager](https://cloud.google.com/deployment-manager/docs/).
-
-### Docker Tags
-
-#### All Versions
-* [specific release number](https://github.com/NYTimes/drone-gdm/releases) (see [dockerhub repo](https://hub.docker.com/r/nytimes/drone-gdm/tags/)).
-* the `develop` tag to get the last thing that _built_
-
-#### 1.x Series
-* the `latest` tag to get the latest *v1.x* _stable_
-* the `beta` tag to get the latest _beta_ release
-* the `alpha` tag to get the latest `alpha` release
-* the `develop` tag to get the last thing that _built_
-<sub>(alpha, beta, and develop tags introduced as of `1.2.1a`)</sub>
-
-Starting with version `2.0.0a` the tag scheme is prefixed with major version, e.g:
-* the `v2-alpha` tag to get the latest 2.x _alpha_ release
-* the `v2-beta` tag to get the latest 2.x _beta_ release
-* the `v2-stable` tag to get the latest 2.x _stable_ release
-<sub>This pattern will continue with subsequent major version releases; enabling you to pin your build to the latest stable version of any given backwards-compatible, major-level release</sub>
-
+A simple drone plugin which wraps [Google Deployment Manager](https://cloud.google.com/deployment-manager/docs/). For the latest
+_stable release_, use the `v2-stable` tag. For more info on specific versions,
+see [tags](#tags).
 
 ### Features
  * Set the desired `state` (absent, present, or latest) and the plugin determines whether to create, update, or delete.
- * Support for [GDM Beta Composite Types](https://cloud.google.com/deployment-manager/docs/configuration/templates/create-composite-types)
+ * Support for all GDM v1 types, composites, type-providers, and beta/alpha features
 
-### Compatibility
-Drone-GDM has been tested with drone *0.4* and *0.8*.
+#### Simple Example
+
+:information_source: see [examples](./doc/EXAMPLES.md) for more detiled examples.
+```yaml
+deploy:
+  gdm:
+    image: nytimes/drone-gdm:v2-stable
+    # Provided JSON auth token (from drone secrets):
+    token: >
+      $$GOOGLE_JSON_CREDENTIALS
+    project: my-gcp-project
+    configurations:
+    - name: my-deployment
+      group: deployment
+      state: latest
+      description: A basic GDM deployment yaml file which creates some resources
+      path: ./my-deployment.yaml
+
+```
 
 Usage
 -----
 The bulk of the input parameters are mapped directly to `gcloud` command options.
 Documentation follows for the handful of parameters which are particular to `drone-gdm`.
 
-#### State and Action
+### State and Action
 The `state` can be one of `absent`, `present`, or `latest`.
 
 | Plugin "state" | Object Exists? | Action      |
@@ -55,9 +54,8 @@ configuration or template with `--properties=action:<action from table above>`.
 
 ### Variables
 To circumvent data-type limitations imposed by the passing of properties via the
-deployment manager `--properties` option, template and configurations files
-passed to drone-gdm are first parsed as [golang templates](https://golang.org/pkg/text/template/) with the following
-top-level interfaces available for variable interpolation:
+deployment manager `--properties` option, external configuration files (see the
+[examples](./doc/EXAMPLES.md) for more info), are processed first as [golang templates](https://golang.org/pkg/text/template/) with the following top-level interfaces available for variable interpolation:
  - `.drone` - Drone environment variables provided by the CI system during plugin invocation
  - `.plugin` - Plugin parameters passed via environment during plugin invocation
  - `.context` - Any variables defined in the `vars` section of the plugin invocation
@@ -69,113 +67,47 @@ top-level interfaces available for variable interpolation:
    - `project` - the GCP project name
    - `action` - the gcloud "action" parameter (i.e. `create`, `update`, or `delete`)
 
-### Example with Inline Configurations
-```Yaml
-deploy:
-  gdm:
-    # Indicate where to acquire the image:
-    image: nytimes/drone-gdm:2.0.0
 
-    # Provided JSON auth token (from drone secrets):
-    gcloudPath: /bin/gcloud   # path to gcloud executable
-    verbose: false            # (optional)
-    dryRun: false             # (optional)
-    token: >
-      $$GOOGLE_JSON_CREDENTIALS
-    project: my-gcp-project   # Da--project
-    preview: false            # --preview
-    async: false              # --async
-    vars:
-    - myCtxVar: ctxVal1
-    - myOtherCtxVar: ctxVal2
+Building
+--------
+This project uses [go dep](https://github.com/golang/dep) for depdenency management. Additionally, the
+[3rd party dependencies](./vendor) are _committed into the repo_. However, the usual commands
+apply:
+ - `dep ensure` - to make sure dependencies are up to date
+ - `go vet` - ensure code sanity
+ - `go build` - build for local platform
+ - `go test -v ./...` - run test suite
+ - `./util/docker-build.sh` - prepare an executable in AMD64/Linux format for docker packaging
+ - `docker build -t drone-gdm:local ./` - package drone-gdm as a docker image
 
-    configurations:
-    - name:  my-provider
-      group: typeprovider
-      state: present
-      descriptorURL: https://cloudtasks.googleapis.com/$discovery/rest?version=v2beta3
-      apiOptions: ./api-options-definition.yaml # path to api options YAML
-    - name:  my-deployment
-      group: deployment
-      state: present
-      path: ./my-deployment.yaml
-      description: A GDM Deployment
-      vars:
-      - myCfgVar: cfgVal1
-      - myOtherCfgVar: cfgVal2
-      properties:    # mapped to gcloud '--properties=...'
-        myvar: myval # can be referenced in jinja as: {{ properties.myvar }}
-      labels:        # mapped to '--labels' or '--update-labels', as appropriate
-        mylabel: labelval
-      autoRollbackOnError: false
-      createPolicy: CREATE_OR_ACQUIRE # Optional: CREATE_OR_ACQUIRE or CREATE
-      deletePolicy: DELETE # Optional: DELETE or ABANDON
-      passAction: false # if true, pass action as property, e.g. "action:update"
+There is also a [makefile](./makefile) which provides some shortcuts - specifically:
+ - `make` - build and test
+ - `make drone-gdm` - _just build_ the executable, without testing
+ - `make test` - just test the executable (though, it is built, if absent)
+ - `make docker-bin` - leverage [docker-build.sh](./util/docker-build.sh) to build a dockerizable executable
+ - `make clean` - clean any compiler generated output from the repo
 
-    - name:  my-composite
-      version: beta  # gcloud version to use
-      group: composite
-      state: present
-      path: ./my-composite.jinja
-      description: A GDM "Composite Type"
-      labels: # mapped to '--labels' or '--update-labels', as appropriate
-        mylabel: labelval
-      status: SUPPORTED # Optional: SUPPORTED, DEPRECATED, or EXPERIMENTAL
-      passAction: false
+Tags
+----
 
-```
+#### All Versions
+* [specific release number](https://github.com/NYTimes/drone-gdm/releases) (see [dockerhub repo](https://hub.docker.com/r/nytimes/drone-gdm/tags/)).
+* the `develop` tag to get the last thing that _built_
 
-### Example with Inline and External Configurations
-```Yaml
-deploy:
-  gdm:
-    # Indicate where to acquire the image:
-    image: nytimes/drone-gdm:2.0.0
+#### 2.x
+Starting with version `2.0.0a` the tag scheme is prefixed with major version, e.g:
+* the `v2-alpha` tag to get the latest 2.x _alpha_ release
+* the `v2-beta` tag to get the latest 2.x _beta_ release
+* the `v2-stable` tag to get the latest 2.x _stable_ release
+<sub>This pattern will continue with subsequent major version releases; enabling you to pin your build to the latest stable version of any given backwards-compatible, major-level release</sub>
 
-    # Provided JSON auth token (from drone secrets):
-    gcloudPath: /bin/gcloud   # path to gcloud executable
-    verbose: false            # (optional)
-    dryRun: false             # (optional)
-    token: >
-      $$GOOGLE_JSON_CREDENTIALS
-    project: my-gcp-project   # Da--project
-    preview: false            # --preview
-    async: false              # --async
+#### 1.x Series
+* the `latest` tag to get the latest *v1.x* _stable_
+* the `beta` tag to get the latest _beta_ release
+* the `alpha` tag to get the latest `alpha` release
+* the `develop` tag to get the last thing that _built_
+<sub>(alpha, beta, and develop tags introduced as of `1.2.1a`)</sub>
 
-    vars:
-       prefix: test1
-    configFile: my-configurations.yml
-    configurations:
-    - name:  my-deployment
-      group: deployment
-      state: present
-      path: ./my-deployment.yaml
-      description: A GDM Deployment
-      properties:    # mapped to gcloud '--properties=...'
-        myvar: myval # can be referenced in jinja as: {{ properties.myvar }}
-      labels:        # mapped to '--labels' or '--update-labels', as appropriate
-        mylabel: labelval
-      autoRollbackOnError: false
-      createPolicy: CREATE_OR_ACQUIRE # Optional: CREATE_OR_ACQUIRE or CREATE
-      deletePolicy: DELETE # Optional: DELETE or ABANDON
-      passAction: false # if true, pass action as property, e.g. "action:update"
-```
-
-##### my-configurations.yml
-``` Yaml
-# Parsed as a golang template with variables populated from "vars" above.
-- name:  {{.prefix}}-composite
-  version: beta  # gcloud version to use
-  group: composite
-  state: present
-  path: ./my-composite.jinja
-  description: A GDM "Composite Type"
-  labels: # mapped to '--labels' or '--update-labels', as appropriate
-    mylabel: labelval
-  status: SUPPORTED # Optional: SUPPORTED, DEPRECATED, or EXPERIMENTAL
-  passAction: false
-
-```
 
 ### Resources
  - [drone-gdm on Travis-CI](https://travis-ci.org/NYTimes/drone-gdm)
