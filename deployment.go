@@ -1,6 +1,6 @@
 //==============================================================================
 //
-// drone-gdm/plugin/deploy.go: GDM logic for "Deployments"
+// drone-gdm/deployment.go: GDM logic for "Deployments"
 //
 // Copyright (c) 2017 The New York Times Company
 //
@@ -71,6 +71,11 @@ func (command *GdmDeploymentCmd) Exists(context *GdmPluginContext, spec *GdmConf
 }
 
 func (command *GdmDeploymentCmd) Action(spec *GdmConfigurationSpec, exists bool) (string, error) {
+	// NOTE: The set of possible actions is as follows:
+	//  - deployment already exists: update or delete
+	//  - deployment does not exist: create
+	//
+	// Any other combo of actual state vs desired state is a no-op.
 	if exists {
 		switch spec.State {
 		case "latest":

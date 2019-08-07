@@ -1,6 +1,6 @@
 //==============================================================================
 //
-// drone-gdm/plugin/composite.go: GDM logic for "composite types"
+// drone-gdm/composite.go: GDM logic for "composite types"
 //
 // Copyright (c) 2017 The New York Times Company
 //
@@ -84,7 +84,7 @@ func (command *GdmTypeProviderCmd) Options(context *GdmPluginContext, spec *GdmC
 		return options, fmt.Errorf("\"descriptorURL\" is required for \"%s\"", spec.Group)
 	}
 	addOptIfPresent(&options, "--descriptor-url", spec.DescriptorURL)
-	if (spec.APIOptions != "") {
+	if spec.APIOptions != "" {
 		templatePath := getAdjustedPath(spec.APIOptions, context.Dir)
 		addOptIfPresent(&options, "--api-options-file", templatePath)
 	}

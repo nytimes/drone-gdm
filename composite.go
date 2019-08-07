@@ -1,6 +1,6 @@
 //==============================================================================
 //
-// drone-gdm/plugin/composite.go: GDM logic for "composite types"
+// drone-gdm/composite.go: GDM logic for "composite types"
 //
 // Copyright (c) 2017 The New York Times Company
 //

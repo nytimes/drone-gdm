@@ -1,6 +1,6 @@
 //==============================================================================
 //
-// drone-gdm/plugin/deploy.go: Central drone-gdm deployment logic
+// drone-gdm/gdm.go: Central drone-gdm invocation logic
 //
 // Copyright (c) 2017 The New York Times Company
 //
@@ -33,7 +33,7 @@ type GdmCommand interface {
 	Options(context *GdmPluginContext, spec *GdmConfigurationSpec, action string) ([]string, error)
 }
 
-// Run a complte GDM deployment, according to the parameters passed to the
+// Run a complete GDM deployment, according to the parameters passed to the
 // drone-gdm plugin:
 //  - Store passed in credentials in a temp file
 //  - Activate service account using temp file
@@ -94,9 +94,9 @@ func executeDeploymentAction(context *GdmPluginContext, spec *GdmConfigurationSp
 	if err != nil {
 		return err
 	}
+	args = append(args, options...)
 
 	// Context options:
-	args = append(args, options...)
 	if context.Async {
 		args = append(args, "--async")
 	}
@@ -119,7 +119,7 @@ func executeDeploymentAction(context *GdmPluginContext, spec *GdmConfigurationSp
 func getCmdPrelude(command GdmCommand, spec *GdmConfigurationSpec) []string {
 	var cmd []string
 	switch spec.Group {
-	case "typeprovider", "deployment","composite":
+	case "typeprovider", "deployment", "composite":
 		cmd = []string{"deployment-manager", command.Name()}
 	}
 

@@ -80,6 +80,7 @@ read -r -d '' PLUGIN_CONFIGURATIONS <<'EOF'
 		"name": "my-deployment3",
 		"group": "deployment",
 		"state": "absent",
+		"deletePolicy": "ABANDON",
 		"path": "./my-deployment3.yml"
 	},
 	{

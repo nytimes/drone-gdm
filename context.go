@@ -1,6 +1,6 @@
 //==============================================================================
 //
-// drone-gdm/plugin/context.go: Plugin context for drone-gdm
+// drone-gdm/context.go: Plugin context for drone-gdm
 //
 // Copyright (c) 2017 The New York Times Company
 //

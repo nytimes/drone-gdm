@@ -1,6 +1,6 @@
 //==============================================================================
 //
-// drone-gdm/plugin/yaml2json.go: JSON marshalling overrides to facilitate easy
+// drone-gdm/yaml2json.go: JSON marshalling overrides to facilitate easy
 //                                conversion of yaml data to json.
 //
 // Copyright (c) 2017 The New York Times Company

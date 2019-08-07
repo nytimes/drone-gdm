@@ -1,6 +1,6 @@
 //==============================================================================
 //
-// drone-gdm/plugin/parse.go: Generic-ish drone plugin env parser for go
+// drone-gdm/parse.go: Generic-ish drone plugin env parser for go
 //
 // Copyright (c) 2017 The New York Times Company
 //

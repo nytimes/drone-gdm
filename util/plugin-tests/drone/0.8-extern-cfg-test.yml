@@ -30,9 +30,9 @@
 - name: my-deployment2
   group: deployment
   config: gdm/bucket.yaml
-  state: latest
+  state: absent
   createPolicy: CREATE_OR_ACQUIRE
-  deletePolicy: DELETE
+  deletePolicy: ABANDON
   automaticRollbackOnError: true
   labels:
     example: yamlAndJinja

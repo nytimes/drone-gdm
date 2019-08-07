@@ -1,6 +1,6 @@
 //==============================================================================
 //
-// drone-gdm/plugin/context.go: Plugin context for drone-gdm
+// drone-gdm/config.go: Configuration file context for drone-gdm
 //
 // Copyright (c) 2017 The New York Times Company
 //
@@ -25,24 +25,24 @@ import (
 )
 
 type GdmConfigurationSpec struct {
-	Vars          map[string]interface{} `json:"vars"`
-	GdmVersion    string                 `json:"version" yaml:"version"`
-	Group         string                 `json:"group"`
-	State         string
-	Name          string
-	Path          string
-	Config        string
-	Template      string
-	Description   string
-	DescriptorURL string
-	APIOptions    string
-	Labels        map[string]string
-	Properties    map[string]interface{}
-	AutoRollback  bool `json:"automaticRollbackOnError"`
-	CreatePolicy  string
-	DeletePolicy  string
-	Status        string
-	PassAction    bool `json:"passAction"`
+	Vars          map[string]interface{} `json:"vars" yaml:"vars"`
+	GdmVersion    string                 `json:"version" yaml:"version" yaml:"version" yaml:"version"`
+	Group         string                 `json:"group" yaml:"group"`
+	State         string                 `json:"state" yaml:"state"`
+	Name          string                 `json:"name" yaml:"name"`
+	Path          string                 `json:"path" yaml:"path"`
+	Config        string                 `json:"config" yaml:"config"`
+	Template      string                 `json:"template" yaml:"template"`
+	Description   string                 `json:"description" yaml:"description"`
+	DescriptorURL string                 `json:"descriptorUrl" yaml:"descriptorUrl"`
+	APIOptions    string                 `json:"apiOptions" yaml:"apiOptions"`
+	Labels        map[string]string      `json:"labels" yaml:"labels"`
+	Properties    map[string]interface{} `json:"properties" yaml:"properties"`
+	AutoRollback  bool                   `json:"automaticRollbackOnError" yaml:"automaticRollbackOnError"`
+	CreatePolicy  string                 `json:"createPolicy" yaml:"createPolicy"`
+	DeletePolicy  string                 `json:"deletePolicy" yaml:"deletePolicy"`
+	Status        string                 `json:"status" yaml:"status"`
+	PassAction    bool                   `json:"passAction" yaml:"passAction"`
 }
 
 func (spec *GdmConfigurationSpec) Validate() error {
@@ -96,7 +96,7 @@ func (spec *GdmConfigurationSpec) Validate() error {
 	// --status (optional)
 	if spec.Status != "" {
 		err = IsParamInRange("status", spec.Status, "DEPRECATED", "EXPERIMENTAL", "SUPPORTED")
-		if spec.DeletePolicy != "" && err != nil {
+		if spec.Status != "" && err != nil {
 			return fmt.Errorf("configuration error: %v", err)
 		}
 	}

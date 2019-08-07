@@ -1,6 +1,6 @@
 //==============================================================================
 //
-// drone-gdm/plugin/run.go: Utilities for executing gcloud
+// drone-gdm/run.go: Utilities for executing gcloud
 //
 // Copyright (c) 2017 The New York Times Company
 //
