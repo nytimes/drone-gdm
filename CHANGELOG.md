@@ -1,10 +1,10 @@
 Releases
 ========
 
-2.0.3 + 2.0.4 - 2019/08/06
+2.0.5 - 2019/08/06
 ------------------
  - BUGFIX: add json/yaml annotations for config structure to ensure that configs loaded via `configfile` retain all of their properties
- - Fix ASCII term escape sequences for color after `ERROR:` messages + during command invocation
+ - Fix ANSI term escape sequences for color after `ERROR:` messages + during command invocation
 
 2.0.2 - 2019/07/29
 ------------------
