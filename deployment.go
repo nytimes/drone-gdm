@@ -179,6 +179,7 @@ func (command *GdmDeploymentCmd) getFileOptions(context *GdmPluginContext, spec 
 	// Compatibility: for "path" parameter, determine option by extension
 	case "path":
 		if strings.HasSuffix(configPath, ".yml") || strings.HasSuffix(configPath, ".yaml") {
+			configPath, err = command.getConfigFile(context, spec, configPath, action)
 			configOption = "--config"
 		} else {
 			configOption = "--template"
@@ -228,7 +229,9 @@ func (command *GdmDeploymentCmd) getConfigFile(context *GdmPluginContext, spec *
 		return configPath, err
 	}
 
-	tmpFile, err := ioutil.TempFile(context.TempDir(), "gdm-config")
+	//tmpFile, err := ioutil.TempFile(context.TempDir(), "gdm-config")
+	configDir := path.Dir(configPath)
+	tmpFile, err := ioutil.TempFile(configDir, "gdm-tmp.*.yml")
 	if err == nil {
 		_, err = tmpFile.Write(buff.Bytes())
 		if err == nil {
