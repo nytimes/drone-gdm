@@ -1,14 +1,24 @@
 Releases
 ========
 
+2.0.3 + 2.0.4 - 2019/08/06
+------------------
+ - BUGFIX: add json/yaml annotations for config structure to ensure that configs loaded via `configfile` retain all of their properties
+ - Fix ASCII term escape sequences for color after `ERROR:` messages + during command invocation
+
+2.0.2 - 2019/07/29
+------------------
+ - Add support for [type-providers](https://cloud.google.com/deployment-manager/docs/configuration/type-providers/creating-type-provider)
+ - Bump gcloud SDK version to `255.0.0`
+
 2.0.1b - 2018/09/06 + 2.0.1 - 2018/10/03
 ----------------------------------------
- - Bump to cloud sdk 215.0.0
+ - Bump to cloud sdk `215.0.0`
 
 2.0.0 - 2018/07/18
 ------------------
  - Updated support for external configuration files and more advanced templating
- - Fixed bug introduced in 1.2.Xa series which _did not pass `deletePolicy` spec_
+ - Fixed bug introduced in `1.2.Xa` series which _did not pass `deletePolicy` spec_
 
 1.2.1a - 2018/05/09
 -------------------
