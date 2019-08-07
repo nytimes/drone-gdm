@@ -49,7 +49,7 @@ func RunGcloud(context *GdmPluginContext, args ...string) *GcloudResult {
 		qualifier = " (dry run)"
 	}
 
-	verbose(context, "drone-gdm%s:\n\t\"\x1b[34m%s\x1b[0m \x1b[32m%s\x1b[0m\"\n",
+	verbose(context, "drone-gdm%s:\n\t\"\x1b[34m%s\x1b[00m \x1b[32m%s\x1b[00m\"\n",
 		qualifier, context.GcloudPath,
 		strings.Join(args, " \\\n\t\t"))
 
@@ -61,7 +61,7 @@ func RunGcloud(context *GdmPluginContext, args ...string) *GcloudResult {
 		result.Error = nil
 	}
 
-	verbose(context, "\tStatus Okay: \x1b[33m%t\x1b[0m\n", result.Error == nil)
+	verbose(context, "\tStatus Okay: \x1b[33m%t\x1b[00m\n", result.Error == nil)
 
 	if result.Error != nil {
 		fmt.Printf("Error executing gcloud: %v\n", result.Error)

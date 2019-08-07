@@ -75,7 +75,7 @@ func main() {
 }
 
 func errBail(err error) {
-	fmt.Printf("\x1b[00;31mERROR: %s\n\x1b[00n", err)
+	fmt.Printf("\x1b[00;31mERROR: %s\n\x1b[00m", err)
 	doCleanup()
 	os.Exit(1)
 }
