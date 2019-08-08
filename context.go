@@ -59,6 +59,7 @@ type GdmPluginContext struct {
 	// Internal use only:
 	parseOkay bool
 	tmpDir    string
+	tmpFiles  []string
 
 	// TODO: other gcloud global parameters
 }
@@ -84,6 +85,7 @@ func NewGdmPluginContext() (*GdmPluginContext, error) {
 		// internal:
 		parseOkay: false,
 		tmpDir:    tmpDir,
+		tmpFiles:  []string{},
 	}, nil
 }
 
@@ -192,6 +194,10 @@ func (context *GdmPluginContext) Cleanup() error {
 	}
 
 	var err error
+	for _, tmpFile := range context.tmpFiles {
+		err = os.Remove(tmpFile)
+	}
+
 	if (context.tmpDir != "") && (!context.Debug) {
 		err = os.RemoveAll(context.tmpDir)
 	}
@@ -229,6 +235,10 @@ func (context *GdmPluginContext) loadConfigurations() error {
 		context.Configurations = append(context.Configurations, configurations...)
 	}
 	return nil
+}
+
+func (context *GdmPluginContext) trackTempFile(filePath string) {
+	context.tmpFiles = append(context.tmpFiles, filePath)
 }
 
 // EOF

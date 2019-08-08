@@ -28,7 +28,7 @@ read -r -d '' PLUGIN_CONFIGURATIONS <<'EOF'
 		"name": "my-deployment1",
 		"group": "deployment",
 		"state": "latest",
-		"path": "./my-deployment1.yml",
+		"path": "./gdm/bucket.yaml",
 		"automaticRollbackOnError": true,
 		"createPolicy": "CREATE_OR_ACQUIRE",
 		"deletePolicy": "DELETE",
@@ -63,7 +63,7 @@ read -r -d '' PLUGIN_CONFIGURATIONS <<'EOF'
 		"name": "my-deployment2",
 		"group": "deployment",
 		"state": "present",
-		"path": "./my-deployment2.yml",
+		"path": "./gdm/bucket.yaml",
 		"automaticRollbackOnError": true,
 		"createPolicy": "CREATE_OR_ACQUIRE",
 		"deletePolicy": "DELETE",
@@ -84,10 +84,18 @@ read -r -d '' PLUGIN_CONFIGURATIONS <<'EOF'
 		"path": "./my-deployment3.yml"
 	},
 	{
+		"name": "my-deployment4",
+		"group": "deployment",
+		"state": "absent",
+		"preview": true,
+		"deletePolicy": "ABANDON",
+		"path": "./my-deployment3.yml"
+	},
+	{
 		"name": "my-composite1",
 		"group": "composite",
 		"state": "present",
-		"path": "./my-composite1.yml",
+		"path": "./gdm/bucket.yaml",
 		"status": "SUPPORTED",
 		"labels": {
 			"l1": "val1",
@@ -98,7 +106,7 @@ read -r -d '' PLUGIN_CONFIGURATIONS <<'EOF'
 		"name": "my-composite2",
 		"group": "composite",
 		"state": "absent",
-		"path": "./my-composite2.yml",
+		"path": "./gdm/bucket.yaml",
 		"status": "DEPRECATED",
 		"labels": {
 			"l1": "val1",

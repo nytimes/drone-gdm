@@ -100,6 +100,9 @@ func executeDeploymentAction(context *GdmPluginContext, spec *GdmConfigurationSp
 	if context.Async {
 		args = append(args, "--async")
 	}
+	if context.Preview {
+		args = append(args, "--preview")
+	}
 
 	// Don't request user input for delete actions.
 	if action == "delete" {

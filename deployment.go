@@ -233,6 +233,7 @@ func (command *GdmDeploymentCmd) getConfigFile(context *GdmPluginContext, spec *
 	configDir := path.Dir(configPath)
 	tmpFile, err := ioutil.TempFile(configDir, "gdm-tmp.*.yml")
 	if err == nil {
+		context.trackTempFile(tmpFile.Name())
 		_, err = tmpFile.Write(buff.Bytes())
 		if err == nil {
 			tmpFile.Close()

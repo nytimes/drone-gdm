@@ -71,6 +71,7 @@ func main() {
 		}
 	}
 
+	doCleanup()
 	os.Exit(0)
 }
 
