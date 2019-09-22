@@ -1,6 +1,11 @@
 Releases
 ========
 
+2.0.7 - 2019/08/07
+------------------
+ - Update tempfile path to preserve GDM relative paths
+ - Ensure all temp files are removed after run
+
 2.0.5 - 2019/08/06
 ------------------
  - BUGFIX: add json/yaml annotations for config structure to ensure that configs loaded via `configfile` retain all of their properties
