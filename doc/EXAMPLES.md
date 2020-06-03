@@ -1,7 +1,12 @@
-Examples: drone-gdm
-===================
+# Drone-GDM: Examples
 
-### Example with Inline Configurations
+These examples are a little more complicated. They are intended to demonstrate
+the bulk of the features available through drone-gdm.
+
+ - [Inline Configuration](#example-with-inline-configurations)
+ - [Inline _and_ external configurations](#example-with-inline-and-external-configurations)
+
+## Example with Inline Configurations
 ```Yaml
 deploy:
   gdm:
@@ -14,7 +19,7 @@ deploy:
     dryRun: false             # (optional)
     token: >
       $$GOOGLE_JSON_CREDENTIALS
-    project: my-gcp-project   # Da--project
+    project: my-gcp-project   # --project
     preview: false            # --preview
     async: false              # --async
     vars:
@@ -65,7 +70,7 @@ deploy:
 
 ```
 
-### Example with Inline and External Configurations
+## Example with Inline and External Configurations
 ```Yaml
 deploy:
   gdm:
@@ -101,7 +106,7 @@ deploy:
       passAction: false # if true, pass action as property, e.g. "action:update"
 ```
 
-##### my-configurations.yml
+#### my-configurations.yml
 ``` Yaml
 # Parsed as a golang template with variables populated from "vars" above.
 - name:  {{.prefix}}-composite
