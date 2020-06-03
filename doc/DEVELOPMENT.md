@@ -17,14 +17,14 @@
  - `make` - build and test
  - `make drone-gdm` - _just build_ the executable, without testing
  - `make test` - just test the executable (it _is_ built, if absent)
- - `make docker-bin` - leverage [docker-build.sh](./util/docker-build.sh) to build a dockerizable executable
+ - `make docker-bin` - leverage [docker-build.sh](../util/docker-build.sh) to build a dockerizable executable
  - `make clean` - clean any compiler generated output from the repo
 
 ### Dependency Management
 :information_source: This project uses [go dep](https://github.com/golang/dep) for dependency management.
 
-Additionally, the [3rd party dependencies](./vendor) are _[committed](../vendor)
-into the repo_. The usual commands apply:
+Additionally, the [3rd party dependencies](../vendor) are _committed into the
+repo_. The usual commands apply:
  - `dep ensure` - to make sure dependencies are up to date
  - `go vet` - ensure code sanity
  - `go build` - build for local platform
