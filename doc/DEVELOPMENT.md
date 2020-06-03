@@ -1,23 +1,59 @@
 # Drone-GDM: Development
 
-## Building
+### Contents
 
-This project uses [go dep](https://github.com/golang/dep) for dependency management. Additionally, the
-[3rd party dependencies](./vendor) are _committed into the repo_. However, the usual commands
-apply:
+ - [Building and testing](#building-and-testing)
+   - [Dependency Management](#dependency-management)
+   - [Docker](#docker)
+   - [Source Info](#sources)
+ - [Travis CI/Docker Hub](#travis-ci)
+ - [Releases and Tags](#releases-and-tags)
+
+----
+
+## Building and Testing
+
+:information_source: There is a [makefile](../makefile) which provides some shortcuts - specifically:
+ - `make` - build and test
+ - `make drone-gdm` - _just build_ the executable, without testing
+ - `make test` - just test the executable (it _is_ built, if absent)
+ - `make docker-bin` - leverage [docker-build.sh](./util/docker-build.sh) to build a dockerizable executable
+ - `make clean` - clean any compiler generated output from the repo
+
+### Dependency Management
+:information_source: This project uses [go dep](https://github.com/golang/dep) for dependency management.
+
+Additionally, the [3rd party dependencies](./vendor) are _[committed](../vendor)
+into the repo_. The usual commands apply:
  - `dep ensure` - to make sure dependencies are up to date
  - `go vet` - ensure code sanity
  - `go build` - build for local platform
  - `go test -v ./...` - run test suite
- - `./util/docker-build.sh` - prepare an executable in AMD64/Linux format for docker packaging
+
+### Docker
+ - [`docker-build.sh`](../util/docker-builder.sh) - prepare an executable in AMD64/Linux format for docker packaging
  - `docker build -t drone-gdm:local ./` - package drone-gdm as a docker image
 
-There is also a [makefile](./makefile) which provides some shortcuts - specifically:
- - `make` - build and test
- - `make drone-gdm` - _just build_ the executable, without testing
- - `make test` - just test the executable (though, it is built, if absent)
- - `make docker-bin` - leverage [docker-build.sh](./util/docker-build.sh) to build a dockerizable executable
- - `make clean` - clean any compiler generated output from the repo
+### Sources
+ - [main.go](../main.go): Plugin entrypoint
+ - [drone.go](../drone.go): Fetch drone-specific parameters from the environment at startup
+ - [context.go](../context.go): `gcloud` execution context (path, global options, etc)
+ - [config.go](../config.go): Encapsulates top-level GDM configuration specs
+ - [run.go](../run.go): Base functionality for executing `gcloud` and capturing output
+ - [gdm.go](../gdm.go): GDM command line arg formatting and execution (using [run.go](../run.go))
+ - [composite.go](../composite.go): CLI options and validation particular to [composite types](https://cloud.google.com/deployment-manager/docs/fundamentals#composite_types)
+ - [deployment.go](../deployment.go): CLI options and validation particular to [deployments](https://cloud.google.com/deployment-manager/docs/fundamentals#deployment)
+ - [typeprovider.go](../typeprovider.go): CLI options options and validation particular to [type providers](https://cloud.google.com/deployment-manager/docs/fundamentals#basetypes)
+
+### Utilities
+ - [parse.go](../parse.go): Drone parameter parser (from environment variables)
+ - [yaml2json.go](../yaml2json.go): Utility functions to ease some difficulties regarding parsing YAML/JSON from strings
+
+### Tests
+ - [parse_test.go](../parse_test.go)
+ - [run_test.go](../run_test.go)
+
+----
 
 ## Travis CI
 
@@ -29,8 +65,9 @@ invokes:
  - [travis/script.sh](../travis/script.sh) to build and test the binary
  - [travis/after-success.sh](../travis/after-success.sh) to build, tag, and push the [docker image](https://hub.docker.com/r/nytimes/drone-gdm).
 
+----
 
-## Tags
+## Releases and Tags
 The `develop` tag to get the last thing that _built_. Releases are tagged as follows:
 
 #### 2.x
