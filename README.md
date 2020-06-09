@@ -32,12 +32,30 @@ deploy:
 ```
 
 
-#### Versions/Compatibility
+### Versions/Compatibility
 
-The latest stable release is [`v2-stable`](https://hub.docker.com/r/nytimes/drone-gdm/tags).
-It is compatible with [drone](https://drone.io/) `0.5` - `0.8`.
+Drone-GDM uses a _subset_ of [semantic versioning](https://semver.org/) (see [this doc](./doc/MAINTAINING.md) for specifics).
+A list of releases can be found [here](https://github.com/nytimes/drone-gdm/releases).
+
+The latest stable, major-tracking, release is [`v2-stable`](https://hub.docker.com/r/nytimes/drone-gdm/tags)
+(tested with [drone](https://drone.io/) `0.5` - `0.8`).
 
 > (:information_source: Drone `1.x` compatibility coming in `v3`).
+
+#### Docker Tags
+
+Docker [release images](https://hub.docker.com/r/nytimes/drone-gdm/tags/)
+carry the same `M.m.p` version as the github release tag which built them.
+
+_Major-only_ tracking tags are also provided which allow you to pin to the latest
+version of a major release (or pre-release) without risking breaking changes, e.g.:
+* `v2-alpha`: latest 2.x _alpha_ release
+* `v2-beta`: latest 2.x _beta_ release
+* `v2-stable`: latest 2.x _stable_ release
+
+The _latest merge to master which builds successfully in the CI pipeline_ is always tagged as `develop`.
+
+> :confused: After the 1.x release usage is phased out, we'll start tagging this as `latest`.
 
 ## Resources
  - [Usage](./doc/USAGE.md) and [examples](./doc/EXAMPLES.md)
