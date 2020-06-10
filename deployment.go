@@ -115,6 +115,7 @@ func (command *GdmDeploymentCmd) Options(context *GdmPluginContext, spec *GdmCon
 	switch action {
 	case "create":
 		addOptIfPresent(&options, fileOption, configPath)
+		addOptIfPresent(&options, "--create-policy", spec.CreatePolicy)
 		addOptIfPresent(&options, "--description", spec.Description)
 		labels := mapAsOptions(spec.Labels, "=", ",")
 		addOptIfPresent(&options, "--labels", labels)
