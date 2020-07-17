@@ -22,6 +22,7 @@ package main
 
 import (
 	"fmt"
+	"strings"
 )
 
 type GdmConfigurationSpec struct {
@@ -79,7 +80,9 @@ func (spec *GdmConfigurationSpec) Validate() error {
 
 	// --create-policy (optional)
 	if spec.CreatePolicy != "" {
-		err = IsParamInRange("createPolicy", spec.CreatePolicy, "ACQUIRE", "CREATE_OR_ACQUIRE")
+		// Backwards compatibility: convert to lowercase
+		spec.CreatePolicy = strings.ToLower(spec.CreatePolicy)
+		err = IsParamInRange("createPolicy", spec.CreatePolicy, "acquire", "create_or_acquire")
 		if spec.CreatePolicy != "" && err != nil {
 			return fmt.Errorf("configuration error: %v", err)
 		}
@@ -87,7 +90,9 @@ func (spec *GdmConfigurationSpec) Validate() error {
 
 	// --delete-policy (optional)
 	if spec.DeletePolicy != "" {
-		err = IsParamInRange("deletePolicy", spec.DeletePolicy, "ABANDON", "DELETE")
+		// Backwards compatibility: convert to lowercase
+		spec.DeletePolicy = strings.ToLower(spec.DeletePolicy)
+		err = IsParamInRange("deletePolicy", spec.DeletePolicy, "abandon", "delete")
 		if spec.DeletePolicy != "" && err != nil {
 			return fmt.Errorf("configuration error: %v", err)
 		}
@@ -95,7 +100,10 @@ func (spec *GdmConfigurationSpec) Validate() error {
 
 	// --status (optional)
 	if spec.Status != "" {
-		err = IsParamInRange("status", spec.Status, "DEPRECATED", "EXPERIMENTAL", "SUPPORTED")
+		// TODO, we can probably get rid of this:
+		// Backwards compatibility: convert to lowercase
+		spec.Status = strings.ToLower(spec.Status)
+		err = IsParamInRange("status", spec.Status, "deprecated", "experimental", "supported")
 		if spec.Status != "" && err != nil {
 			return fmt.Errorf("configuration error: %v", err)
 		}
