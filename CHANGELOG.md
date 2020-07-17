@@ -1,6 +1,11 @@
 Releases
 ========
 
+2.0.8 - 2020/07/17
+------------------
+ - Update Google Cloud SDK to 299
+ - Ensure `--createPolicy` / `--deletePolicy` are lowercase
+
 2.0.7 - 2019/08/07
 ------------------
  - Update tempfile path to preserve GDM relative paths
