@@ -18,12 +18,12 @@ and patch numbers and - _optionally_ - a prerelease suffix (which must be either
 
 To cut a new release:
 1. [Build and test locally](./DEVELOPMENT.md)
-1. `git push origin master`
+1. `git push origin main`
 1. [Verify that the build passed](https://travis-ci.org/github/NYTimes/drone-gdm)
 1. [Verify that the `develop` docker tag](https://hub.docker.com/r/nytimes/drone-gdm/tags) was updated
 1. Update the [CHANGELOG](../CHANGELOG.md) with relevant info
 1. `git tag -a <version>`
-1. `git push origin master <version>`
+1. `git push origin main <version>`
 1. Verify that the [release](../README.md#docker-tags) docker tag was updated
 
 ### Tag Format Spec

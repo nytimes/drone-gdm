@@ -23,7 +23,7 @@ if [ -n "$TRAVIS_TAG" ]; then
   docker push "${ORG_NAME}/drone-gdm:$TRAVIS_TAG"
   docker push "${ORG_NAME}/drone-gdm:v${major}-${img_lbl}"
 
-elif [ "$TRAVIS_BRANCH" == "master" ]; then
+elif [ "$TRAVIS_BRANCH" == "main" ]; then
   docker build -t "${ORG_NAME}/drone-gdm:develop" .
   docker login -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD"
   docker push "${ORG_NAME}/drone-gdm:develop"

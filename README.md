@@ -1,6 +1,6 @@
 # drone-gdm
 
-[![Build Status](https://travis-ci.org/NYTimes/drone-gdm.svg?branch=master)](https://travis-ci.org/NYTimes/drone-gdm)
+[![Build Status](https://travis-ci.org/NYTimes/drone-gdm.svg?branch=main)](https://travis-ci.org/NYTimes/drone-gdm)
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](./LICENSE.md)
 [![Docker Pulls](https://img.shields.io/docker/pulls/nytimes/drone-gdm)](https://hub.docker.com/r/nytimes/drone-gdm)
 
@@ -53,7 +53,7 @@ version of a major release (or pre-release) without risking breaking changes, e.
 * `v2-beta`: latest 2.x _beta_ release
 * `v2-stable`: latest 2.x _stable_ release
 
-The _latest merge to master which builds successfully in the CI pipeline_ is always tagged as `develop`.
+The _latest merge to main which builds successfully in the CI pipeline_ is always tagged as `develop`.
 
 > :confused: After the 1.x release usage is phased out, we'll start tagging this as `latest`.
 
