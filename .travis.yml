@@ -12,7 +12,7 @@ env:
   - secure: IDdoMl8dxVo6UCCZ1k4lAIVEBIp+WzkntU+N9iv2i7duZF/GnH2Jt5WgSa5i/NOvC4To4FeEaB0WHNu4NHQ9C2+oDJvVuXKPC8OVT7UjI8VviJdmGisiDUFoBPiGwhvCBnkmpRimnzUThut7WbTny7HT7FFm6H+bQQ1qmKVIM0oc+3eHIczKE0DM1L20Lk4S5VSrbBF3jWsfWv4M3CbrYwzJ24fyImn5VWi0CLfQBa8MaaJI9uaGhUIIyRHZE4nXPUnfjb8yxZEO6c3VY0GAjXIn5gI4uQSuEn2y+NlGvvgJjO5zky3o00zBH9/31reafoxgi9upVvnNazXfjS4FLVcIl1QDKDxx705XYWRAU91jRwWQYPIiyKDpPtFi7MqbbJQdoqVSCafBEDFFcSitWV0itUW1HeRYeolUi2YGJ2Ed4kNmxRGW3w0IOcrtGMnIQh2/QCkz4PNZO5QcF/2qXGt0rheqiRuVHRQrFyCS+iilUBxfpKmDXqa/TegBQYUP3u+CTf4NjqQY19SgS8LHHAmD3wC+c90aZYfMoEJOK/mDLtIeBM2uFPLXPDBF6B5EFa96SouUHBkhGJ25/d9bwthPVQLlt8N512JgwSjNBNZdG10TgNDgwsY7EZGTH1d5Z3ncaeMQZjWmLUiJJc1X312R748VyruCsMYCPGSF0mg=
 branches:
   only:
-  - master
+  - main
   - /^\d+\.\d+\.\d+[ab]*/
 script: ./travis/script.sh
 after_success: ./travis/after-success.sh
