@@ -1,8 +1,9 @@
 language: go
+go_import_path: github.com/nytimes/drone-gdm
 services:
 - docker
 go:
-- 1.9
+- 1.15
 env:
   global:
   - CGO_ENABLED=0
@@ -13,6 +14,7 @@ env:
 branches:
   only:
   - main
+  - develop
   - /^\d+\.\d+\.\d+[ab]*/
 script: ./travis/script.sh
 after_success: ./travis/after-success.sh

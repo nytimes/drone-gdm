@@ -26,10 +26,12 @@ and follow these guidelines:
 
 1. Check the open issues and pull requests for existing discussions.
 1. Open an issue to discuss a new feature.
-1. Fork the repo, [develop locally](./doc/DEVELOPMENT.md), and **write tests**.
-1. Follow [these recommendations](https://github.com/golang/go/wiki/CodeReviewComments).
-1. Ensure the entire test suite passes locally (`make test`) and on Travis CI (if possible).
-1. [Create a pull request](https://github.com/nytimes/drone-gdm/compare?expand=1)
+1. Review the [developer guide](./doc/DEVELOPMENT.md).
+1. Write tests.
+1. Make sure code follows the ['Go Code Review Comments'](https://github.com/golang/go/wiki/CodeReviewComments).
+1. Make sure your changes pass `make test`.
+1. Make sure the entire test suite passes locally and on Travis CI.
+1. Open a Pull Request.
 
 ## License
 

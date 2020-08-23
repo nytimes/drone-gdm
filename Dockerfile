@@ -4,5 +4,5 @@ RUN /google-cloud-sdk/bin/gcloud components install beta --quiet
 # Clean up
 RUN rm -rf ./google-cloud-sdk/.install
 
-ADD drone-gdm /bin/
+ADD drone-gdm.linux.amd64 /bin/drone-gdm
 ENTRYPOINT ["/bin/drone-gdm"]

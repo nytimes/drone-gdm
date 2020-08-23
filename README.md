@@ -38,9 +38,7 @@ Drone-GDM uses a _subset_ of [semantic versioning](https://semver.org/) (see [th
 A list of releases can be found [here](https://github.com/nytimes/drone-gdm/releases).
 
 The latest stable, major-tracking, release is [`v2-stable`](https://hub.docker.com/r/nytimes/drone-gdm/tags)
-(tested with [drone](https://drone.io/) `0.5` - `0.8`).
-
-> (:information_source: Drone `1.x` compatibility coming in `v3`).
+(tested with [drone](https://drone.io/) `0.5` - `1`).
 
 #### Docker Tags
 
@@ -53,9 +51,7 @@ version of a major release (or pre-release) without risking breaking changes, e.
 * `v2-beta`: latest 2.x _beta_ release
 * `v2-stable`: latest 2.x _stable_ release
 
-The _latest merge to main which builds successfully in the CI pipeline_ is always tagged as `develop`.
-
-> :confused: After the 1.x release usage is phased out, we'll start tagging this as `latest`.
+The _latest merge to main which builds successfully in the CI pipeline_ is always tagged as `latest`.
 
 ## Resources
  - [Usage](./doc/USAGE.md) and [examples](./doc/EXAMPLES.md)
