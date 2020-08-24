@@ -23,8 +23,8 @@ community for all and expect our code of conduct to be honored.
     behavior:
      - Make your case without resorting to pejoratives or ad hominem attacks.
      - _Teach. Don't berate!_
-     - Let's learn from and educate on another.
      - _Be deliberate in your choice of words. Be Kind. Be Cautious._
+     - Let's learn from and educate one another.
  1. **When disagreements arise, seek to arrive at understanding _first_**:
      - Disagreements _will_ happen - socially and technically.
      - _Take time to understand the opposing perspective before offering a
