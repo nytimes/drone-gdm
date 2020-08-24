@@ -55,8 +55,9 @@ The _latest merge to main which builds successfully in the CI pipeline_ is alway
 
 ## Resources
  - [Usage](./doc/USAGE.md) and [examples](./doc/EXAMPLES.md)
- - [Contributing guide](./CONTRIBUTING.md)
  - [Development guide - building, CI, and cutting releases](./doc/DEVELOPMENT.md)
+   - [Code of Conduct](./CODE_OF_CONDUCT.md)
+   - [Contributing guide](./CONTRIBUTING.md)
  - [Releases](./CHANGELOG.md):
    - [github](https://github.com/NYTimes/drone-gdm/releases)
    - [dockerhub](https://hub.docker.com/r/nytimes/drone-gdm/tags/)

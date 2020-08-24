@@ -1,5 +1,6 @@
 /.drone.sec.yml
 /drone-gdm*
+/README.dockerhub.md
 /bin/test-*.sh
 *-test.bash
 

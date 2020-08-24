@@ -1,6 +1,11 @@
 # Drone-GDM: Development
 
+> :star: Be sure to review the [Code of Conduct](../CODE_OF_CONDUCT.md) ahead of time!
+>
 > :warning: Additional documentation for maintainers can be found  [here](./MAINTAINING.md).
+>
+> :information_source: See the [Contributing Guide](../CONTRIBUTING.md) for information regarding
+> proposing or submitting changes.
 
 ### Contents
 
