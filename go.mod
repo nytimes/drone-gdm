@@ -3,7 +3,7 @@ module github.com/nytimes/drone-gdm
 go 1.15
 
 require (
-	github.com/Masterminds/goutils v1.1.0 // indirect
+	github.com/Masterminds/goutils v1.1.1 // indirect
 	github.com/Masterminds/semver v1.5.0 // indirect
 	github.com/drone/drone-plugin-go v0.0.0-20160112175251-d6109f644c59
 	github.com/google/uuid v1.1.1 // indirect
